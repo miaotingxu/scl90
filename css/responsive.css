@@ -1,0 +1,798 @@
+/* 响应式设计样式 */
+
+/* 基础响应式断点 */
+:root {
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+}
+
+/* 移动优先响应式设计 */
+
+/* 超小屏幕 (小于 640px) */
+@media (max-width: 639px) {
+    /* 容器调整 */
+    .container {
+        padding: 0 1rem;
+    }
+    
+    /* 头部响应式 */
+    .header .container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    
+    .nav {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* 主内容区域 */
+    .main {
+        padding: 1rem 0;
+    }
+    
+    /* 按钮响应式 */
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* 网格布局调整 */
+    .modules-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+    }
+    
+    /* 模块卡片响应式 */
+    .module-card {
+        padding: 1.5rem;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .module-icon {
+        margin: 0 auto 1rem;
+    }
+    
+    .module-content {
+        text-align: center;
+    }
+    
+    .module-meta {
+        justify-content: center;
+    }
+    
+    .module-features {
+        justify-content: center;
+    }
+    
+    .module-action {
+        margin-top: 1rem;
+    }
+    
+    /* 英雄区域响应式 */
+    .hero {
+        padding: 2rem 0;
+        text-align: center;
+        background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+    }
+    
+    .hero-title {
+        font-size: 1.75rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-white);
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-white);
+        opacity: 0.95;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .stat-item {
+        padding: 0.5rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    /* 标题响应式 */
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+        color: var(--primary-green);
+    }
+    
+    .section-description {
+        font-size: 1rem;
+        color: var(--text-secondary);
+    }
+    
+    /* 测试模块部分响应式 */
+    .test-modules {
+        padding: 40px 0;
+        background: var(--bg-primary);
+    }
+    
+    .section-header {
+        margin-bottom: 2rem;
+    }
+    
+    /* 特性项目响应式 */
+    .feature-item {
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .feature-icon {
+        margin: 0 auto 1rem;
+    }
+    
+    .feature-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* 搜索框响应式 */
+    .search-container {
+        max-width: 100%;
+        margin: 1rem 0;
+    }
+    
+    .search-box {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .search-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* 测评页面响应式 */
+    .progress-container {
+        padding: 1rem;
+        margin: 0 0.5rem 1rem;
+    }
+    
+    .welcome-screen,
+    .question-screen,
+    .completion-screen {
+        padding: 1.5rem;
+        margin: 0.5rem;
+    }
+    
+    .welcome-title,
+    .completion-title {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-description,
+    .completion-description {
+        font-size: 0.95rem;
+    }
+    
+    .question-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .question-number {
+        font-size: 1.1rem;
+    }
+    
+    .question-category {
+        font-size: 0.85rem;
+    }
+    
+    .question-text {
+        font-size: 1.05rem;
+        line-height: 1.5;
+    }
+    
+    .answer-options {
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .answer-option {
+        padding: 0.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .answer-label {
+        font-size: 0.95rem;
+    }
+    
+    .answer-value {
+        font-size: 0.8rem;
+    }
+    
+    .question-navigation {
+        flex-direction: column;
+        gap: 1rem;
+        padding-top: 1.5rem;
+    }
+    
+    .question-actions {
+        order: -1;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .welcome-actions,
+    .completion-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    /* 悬浮按钮响应式 */
+    .fab-container {
+        bottom: 1rem;
+        right: 1rem;
+    }
+    
+    .fab-main {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .fab-item {
+        width: 40px;
+        height: 40px;
+    }
+    
+    /* 页脚响应式 */
+    .footer {
+        padding: 2rem 0 1rem;
+    }
+    
+    .footer-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .footer-links li {
+        margin-bottom: 0.25rem;
+    }
+    
+    .footer-bottom {
+        padding-top: 1rem;
+        font-size: 0.85rem;
+    }
+    
+    /* 字体大小调整 */
+    html {
+        font-size: 14px;
+    }
+    
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1.1rem; }
+    h5 { font-size: 1rem; }
+    h6 { font-size: 0.95rem; }
+}
+
+/* 小屏幕 (小于 480px) */
+@media (max-width: 479px) {
+    /* 进一步缩小间距 */
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    .header {
+        padding: 1rem 0;
+    }
+    
+    .main {
+        padding: 1rem 0;
+    }
+    
+    /* 按钮进一步调整 */
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+        background: var(--bg-secondary);
+        color: var(--primary-blue);
+        border: 1px solid var(--primary-blue);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
+        color: var(--text-white);
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: var(--primary-blue);
+        border: 1px solid var(--primary-blue);
+    }
+    
+    /* 测试模块部分进一步调整 */
+    .test-modules {
+        padding: 30px 0;
+        background: var(--bg-primary);
+    }
+    
+    .section-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.25rem;
+        color: var(--primary-green);
+    }
+    
+    .section-description {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+    
+    /* 模块卡片进一步调整 */
+    .module-card {
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border: 1px solid rgba(25, 118, 210, 0.1);
+    }
+    
+    .module-title {
+        font-size: 1.1rem;
+    }
+    
+    .module-description {
+        font-size: 0.9rem;
+    }
+    
+    .module-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    /* 测评页面进一步调整 */
+    .progress-container {
+        padding: 0.75rem;
+        margin: 0 0.25rem 0.75rem;
+    }
+    
+    .welcome-screen,
+    .question-screen,
+    .completion-screen {
+        padding: 1rem;
+        margin: 0.25rem;
+        border-radius: 8px;
+    }
+    
+    .question-text {
+        font-size: 1rem;
+    }
+    
+    .answer-option {
+        padding: 0.6rem;
+    }
+    
+    .assessment-details {
+        padding: 1rem;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .completion-summary {
+        padding: 1rem;
+    }
+    
+    .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    /* 特性图标调整 */
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0.75rem;
+    }
+    
+    .feature-title {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-description {
+        font-size: 0.9rem;
+    }
+    
+    /* 搜索框进一步调整 */
+    .search-results {
+        max-height: 200px;
+    }
+    
+    .search-result-item {
+        padding: 0.75rem 1rem;
+    }
+    
+    /* 悬浮按钮进一步调整 */
+    .fab-container {
+        bottom: 0.75rem;
+        right: 0.75rem;
+    }
+    
+    .fab-main {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .fab-menu {
+        bottom: 55px;
+    }
+    
+    .fab-item {
+        width: 35px;
+        height: 35px;
+    }
+    
+    /* 字体大小进一步调整 */
+    html {
+        font-size: 13px;
+    }
+    
+    /* 进度条调整 */
+    .progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* 通知提示调整 */
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* 中等屏幕 (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+    .modules-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .hero-stats {
+        gap: 2rem;
+    }
+    
+    .stat-item {
+        padding: 0.75rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* 大屏幕 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .modules-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+    }
+    
+    .hero-title {
+        font-size: 2.25rem;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* 超大屏幕 (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .modules-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+/* 特大屏幕 (1280px 以上) */
+@media (min-width: 1280px) {
+    .modules-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .section-title {
+        font-size: 2.25rem;
+    }
+}
+
+/* 高分辨率屏幕适配 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* 高分辨率屏幕优化 */
+    .module-icon svg,
+    .feature-icon svg {
+        transform: scale(1.1);
+    }
+    
+    .fab-main svg,
+    .fab-item svg {
+        transform: scale(1.1);
+    }
+}
+
+/* 横向模式适配 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        padding: 1.5rem 0;
+    }
+    
+    .hero-stats {
+        flex-direction: row;
+        gap: 2rem;
+    }
+    
+    .test-modules,
+    .features {
+        padding: 1.5rem 0;
+    }
+    
+    .module-card {
+        padding: 1rem;
+    }
+    
+    .welcome-screen,
+    .question-screen,
+    .completion-screen {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+    
+    .fab-container {
+        bottom: 0.5rem;
+        right: 0.5rem;
+    }
+}
+
+/* 深色模式响应式 */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+    .module-card {
+        background: var(--gray-800);
+        border-color: var(--gray-700);
+    }
+    
+    .answer-option {
+        background: var(--gray-800);
+        border-color: var(--gray-700);
+    }
+    
+    .assessment-details,
+    .completion-summary {
+        background: var(--gray-800);
+    }
+    
+    .welcome-notice {
+        background: var(--gray-800);
+        border-left-color: var(--primary-color);
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .btn:hover {
+        transform: none;
+    }
+    
+    .module-card:hover {
+        transform: none;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .answer-option:hover {
+        transform: none;
+    }
+    
+    /* 增大触摸目标 */
+    .btn {
+        min-height: 44px;
+    }
+    
+    .answer-option {
+        min-height: 48px;
+    }
+    
+    .nav-link {
+        padding: 0.75rem 1rem;
+        min-height: 44px;
+    }
+    
+    .search-input {
+        min-height: 44px;
+    }
+    
+    .fab-main {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .fab-item {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* 动画性能优化 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .module-card:hover,
+    .btn:hover,
+    .answer-option:hover {
+        transform: none !important;
+    }
+}
+
+/* 安全区域适配 (iPhone X 及更新机型) */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .header {
+        padding-top: calc(1.5rem + env(safe-area-inset-top));
+    }
+    
+    .fab-container {
+        bottom: calc(1rem + env(safe-area-inset-bottom));
+    }
+    
+    .footer {
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+    }
+}
+
+/* 可折叠设备适配 */
+@media (horizontal-viewport-segments: 2) {
+    .container {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    .modules-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-content {
+        grid-column: 1 / -1;
+    }
+}
+
+/* 打印响应式 */
+@media print {
+    .header,
+    .footer,
+    .fab-container {
+        display: none;
+    }
+    
+    .main {
+        padding: 0;
+        min-height: auto;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .module-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .btn {
+        display: none;
+    }
+}

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理测评报告 - 专业心理健康评估</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo"><span class="back-icon">←</span> 心理健康测评</a>
+            <div class="assessment-info">
+                <span class="assessment-title">测评报告</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="report-container" id="reportContainer">
+            <!-- Loading Screen -->
+            <div class="loading-screen" id="loadingScreen">
+                <div class="loading-content">
+                    <div class="loading-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v4m0 12v4m8-8h-4M4 12H2m15.364 6.364l-2.828-2.828M8.464 8.464L5.636 5.636m12.728 0l-2.828 2.828m-7.072 7.072l-2.828 2.828"></path>
+                        </svg>
+                    </div>
+                    <h2 class="loading-title">AI正在分析您的心理健康状况</h2>
+                    <p class="loading-description">请稍等，我们正在为您生成个性化的心理健康分析报告</p>
+                    
+                    <div class="loading-progress">
+                        <div class="loading-bar"></div>
+                        <div class="loading-steps">
+                            <div class="step active" data-step="1">正在分析测评数据...</div>
+                            <div class="step" data-step="2">正在生成心理健康评估...</div>
+                            <div class="step" data-step="3">正在准备个性化建议...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Content -->
+            <div class="report-content" id="reportContent" style="display: none;">
+                <!-- Report Header -->
+                <div class="report-header">
+                    <div class="report-title-section">
+                        <h1 class="report-title" id="reportTitle">心理健康评估报告</h1>
+                        <p class="report-subtitle" id="reportSubtitle">基于SCL90心理测评量表的专业分析</p>
+                    </div>
+                    
+                    <div class="report-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">测评时间:</span>
+                            <span class="meta-value" id="reportDate">2024年1月1日</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">完成用时:</span>
+                            <span class="meta-value" id="reportDuration">18分钟</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">报告编号:</span>
+                            <span class="meta-value" id="reportId">PSY-20240101-001</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Dashboard Header -->
+                <div class="dashboard-header">
+                    <div class="dashboard-badge">
+                        <span class="badge-icon">📊</span>
+                        <span class="badge-text">专业心理测评报告</span>
+                    </div>
+                    <div class="report-status">
+                        <span class="status-indicator completed"></span>
+                        <span class="status-text">测评已完成</span>
+                    </div>
+                </div>
+
+                <!-- Overall Assessment with Professional Chart -->
+                <div class="assessment-overview">
+                    <div class="overview-card">
+                        <div class="overview-header">
+                            <div class="overview-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"></path>
+                                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                                </svg>
+                            </div>
+                            <div class="overview-title-section">
+                                <h3 class="overview-title">整体心理健康状况</h3>
+                                <p class="overview-subtitle">基于SCL-90量表综合评估</p>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-content">
+                            <div class="score-display">
+                                <div class="gauge-chart">
+                                    <div class="gauge-background"></div>
+                                    <div class="gauge-progress" id="gaugeProgress"></div>
+                                    <div class="gauge-center">
+                                        <span class="gauge-score" id="gaugeScore">7.2</span>
+                                        <span class="gauge-total">/10</span>
+                                    </div>
+                                </div>
+                                <div class="score-info">
+                                    <span class="score-level" id="overallScore">良好</span>
+                                    <span class="score-description" id="overallRating">心理健康状况良好</span>
+                                </div>
+                            </div>
+                            
+                            <div class="key-metrics">
+                                <div class="metric-item">
+                                    <div class="metric-value">90</div>
+                                    <div class="metric-label">测评项目</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value" id="positiveItems">12</div>
+                                    <div class="metric-label">阳性项目</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value" id="avgScore">1.8</div>
+                                    <div class="metric-label">平均得分</div>
+                                </div>
+                            </div>
+                            
+                            <div class="overview-description" id="overallDescription">
+                                <p>您的心理健康状况整体良好，在大多数维度上表现正常。测评结果显示您的阳性项目数为12个，平均得分为1.8分，处于正常范围内。</p>
+                                <p>建议继续保持积极的生活方式，定期进行心理健康评估。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dimension Scores -->
+                <div class="dimension-scores">
+                    <h2 class="section-title">各维度心理健康评估</h2>
+                    
+                    <div class="scores-grid" id="scoresGrid">
+                        <!-- 动态生成维度评分 -->
+                    </div>
+                </div>
+
+                <!-- Detailed Analysis -->
+                <div class="detailed-analysis">
+                    <h2 class="section-title">AI深度分析</h2>
+                    
+                    <div class="analysis-content" id="analysisContent">
+                        <!-- AI生成的详细分析 -->
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="recommendations">
+                    <h2 class="section-title">个性化建议</h2>
+                    
+                    <div class="recommendations-grid" id="recommendationsGrid">
+                        <!-- 动态生成建议 -->
+                    </div>
+                </div>
+
+                <!-- Risk Assessment -->
+                <div class="risk-assessment">
+                    <h2 class="section-title">风险评估</h2>
+                    
+                    <div class="risk-content" id="riskContent">
+                        <!-- 风险评估内容 -->
+                    </div>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="disclaimer">
+                    <div class="disclaimer-content">
+                        <h4>重要声明</h4>
+                        <ul>
+                            <li>本报告基于您提供的测评数据生成，仅供参考，不能替代专业医疗诊断</li>
+                            <li>如测评结果显示需要关注的心理健康问题，建议咨询专业心理健康医生</li>
+                            <li>测评结果可能受到多种因素影响，包括测试时的情绪状态、环境等</li>
+                            <li>建议您定期进行心理健康评估，持续关注心理健康状况</li>
+                            <li>如需紧急心理援助，请拨打心理危机干预热线</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Report Actions -->
+                <div class="report-actions">
+                    <button class="btn btn-primary" id="downloadReport">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        下载报告
+                    </button>
+                    <button class="btn btn-secondary" id="shareReport">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                        分享报告
+                    </button>
+                    <button class="btn btn-outline" id="retakeAssessment">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        重新测评
+                    </button>
+                    <button class="btn btn-outline" id="backToHome">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        返回首页
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/report.js"></script>
+</body>
+</html>

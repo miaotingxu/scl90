@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理测评中心 - 专业心理健康评估平台</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">心理健康测评</h1>
+            <nav class="nav">
+                <a href="#" class="nav-link active">首页</a>
+                <a href="#modules" class="nav-link">测评模块</a>
+                <a href="#features" class="nav-link">平台特色</a>
+                <a href="#about" class="nav-link">关于我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Test Modules Section -->
+        <section class="test-modules" id="modules">
+            <div class="container">
+                <div class="section-header">
+                    <h3 class="section-title">专业心理健康评估</h3>
+                    <p class="section-description">基于国际标准的SCL90心理健康测评，为您提供专业、准确的心理健康评估</p>
+                </div>
+
+                <div class="modules-grid">
+                    <!-- SCL90 Module - Featured -->
+                    <div class="module-card featured" data-module="scl90">
+                        <div class="module-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11l3 3L22 4"></path>
+                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                            </svg>
+                        </div>
+                        <div class="module-content">
+                            <h4 class="module-title">SCL90心理健康测评</h4>
+                            <p class="module-description">国际通用的心理健康评估工具，全面评估您的心理健康状况</p>
+                            <div class="module-meta">
+                                <span class="module-time">⏱ 15-20分钟</span>
+                                <span class="module-questions">📋 90道题</span>
+                            </div>
+                            <div class="module-features">
+                                <span class="feature-tag">专业权威</span>
+                                <span class="feature-tag">AI报告</span>
+                                <span class="feature-tag">心理健康</span>
+                            </div>
+                        </div>
+                        <div class="module-action">
+                            <button class="btn btn-primary">开始测评</button>
+                        </div>
+                    </div>
+
+                    <!-- MBTI 16 Personality Test -->
+                    <div class="module-card" data-module="mbti">
+                        <div class="module-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6m4.22-10.22l4.24-4.24M6.34 18.66l4.24-4.24m0-7.07L6.34 3.11m11.32 0l-4.24 4.24"></path>
+                            </svg>
+                        </div>
+                        <div class="module-content">
+                            <h4 class="module-title">MBTI16人格测试</h4>
+                            <p class="module-description">了解您的MBTI人格类型，发现性格特征和行为偏好</p>
+                            <div class="module-meta">
+                                <span class="module-time">⏱ 10-15分钟</span>
+                                <span class="module-questions">📋 60道题</span>
+                            </div>
+                            <div class="module-features">
+                                <span class="feature-tag">16种人格</span>
+                                <span class="feature-tag">性格分析</span>
+                                <span class="feature-tag">职业指导</span>
+                            </div>
+                        </div>
+                        <div class="module-action">
+                            <button class="btn btn-secondary">开始测评</button>
+                        </div>
+                    </div>
+
+                    <!-- Bipolar Disorder Test -->
+                    <div class="module-card" data-module="bipolar">
+                        <div class="module-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path>
+                                <path d="M12 6v6l4 2"></path>
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"></path>
+                            </svg>
+                        </div>
+                        <div class="module-content">
+                            <h4 class="module-title">双向情感障碍测试</h4>
+                            <p class="module-description">评估情绪波动和双向情感障碍倾向，了解情绪健康状态</p>
+                            <div class="module-meta">
+                                <span class="module-time">⏱ 8-12分钟</span>
+                                <span class="module-questions">📋 45道题</span>
+                            </div>
+                            <div class="module-features">
+                                <span class="feature-tag">情绪评估</span>
+                                <span class="feature-tag">专业筛查</span>
+                                <span class="feature-tag">心理健康</span>
+                            </div>
+                        </div>
+                        <div class="module-action">
+                            <button class="btn btn-secondary">开始测评</button>
+                        </div>
+                    </div>
+
+                    <!-- Dark Triad Personality Test -->
+                    <div class="module-card" data-module="darktriad">
+                        <div class="module-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10 9 11 1.09-.05 2.09-.25 3-.56"></path>
+                                <path d="M12 2L22 7v10c0 5.55-3.84 10-9 11-1.09-.05-2.09-.25-3-.56"></path>
+                            </svg>
+                        </div>
+                        <div class="module-content">
+                            <h4 class="module-title">黑暗三角人格测试</h4>
+                            <p class="module-description">探索马基雅维利主义、自恋和精神病态特质倾向</p>
+                            <div class="module-meta">
+                                <span class="module-time">⏱ 12-18分钟</span>
+                                <span class="module-questions">📋 50道题</span>
+                            </div>
+                            <div class="module-features">
+                                <span class="feature-tag">人格特质</span>
+                                <span class="feature-tag">心理探索</span>
+                                <span class="feature-tag">深度分析</span>
+                            </div>
+                        </div>
+                        <div class="module-action">
+                            <button class="btn btn-secondary">开始测评</button>
+                        </div>
+                    </div>
+
+                    <!-- Adult Attachment Style Test -->
+                    <div class="module-card" data-module="attachment">
+                        <div class="module-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                            </svg>
+                        </div>
+                        <div class="module-content">
+                            <h4 class="module-title">成人依恋类型测试</h4>
+                            <p class="module-description">了解您的依恋类型，探索人际关系和情感连接模式</p>
+                            <div class="module-meta">
+                                <span class="module-time">⏱ 10-15分钟</span>
+                                <span class="module-questions">📋 55道题</span>
+                            </div>
+                            <div class="module-features">
+                                <span class="feature-tag">依恋类型</span>
+                                <span class="feature-tag">人际关系</span>
+                                <span class="feature-tag">情感模式</span>
+                            </div>
+                        </div>
+                        <div class="module-action">
+                            <button class="btn btn-secondary">开始测评</button>
+                        </div>
+                    </div>
+
+                    <!-- Bem Gender Role Test -->
+                    <div class="module-card" data-module="bem">
+                        <div class="module-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v2m-6.36 3.64l1.42 1.42M4.93 4.93l1.41 1.41M2 12h2m3.64 6.36l1.42-1.42M4.93 19.07l1.41-1.41M12 22v-2m6.36-3.64l-1.42-1.42M19.07 4.93l-1.41-1.41M22 12h-2m-3.64 6.36l-1.42 1.42M19.07 19.07l-1.41 1.41"></path>
+                            </svg>
+                        </div>
+                        <div class="module-content">
+                            <h4 class="module-title">贝姆心理性别测试</h4>
+                            <p class="module-description">评估您的心理性别特征，了解男性化和女性化特质倾向</p>
+                            <div class="module-meta">
+                                <span class="module-time">⏱ 8-12分钟</span>
+                                <span class="module-questions">📋 40道题</span>
+                            </div>
+                            <div class="module-features">
+                                <span class="feature-tag">性别角色</span>
+                                <span class="feature-tag">心理特质</span>
+                                <span class="feature-tag">自我认知</span>
+                            </div>
+                        </div>
+                        <div class="module-action">
+                            <button class="btn btn-secondary">开始测评</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2 class="hero-title">专业心理健康评估平台</h2>
+                    <p class="hero-description">基于科学心理学理论，为您提供准确、专业的心理健康评估服务</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">10+</span>
+                            <span class="stat-label">专业测评</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50万+</span>
+                            <span class="stat-label">用户信赖</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">满意度</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h3 class="section-title">为什么选择我们</h3>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11l3 3L22 4"></path>
+                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                            </svg>
+                        </div>
+                        <h4 class="feature-title">专业权威</h4>
+                        <p class="feature-description">基于国际认可的心理学量表，确保测评结果的专业性和准确性</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10 9 11 1.09-.05 2.09-.25 3-.56"></path>
+                                <path d="M12 2L22 7v10c0 5.55-3.84 10-9 11-1.09-.05-2.09-.25-3-.56"></path>
+                            </svg>
+                        </div>
+                        <h4 class="feature-title">隐私保护</h4>
+                        <p class="feature-description">所有测评数据仅保存在本地，不会上传到服务器，保护您的隐私安全</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path>
+                                <path d="M3.27 6.96L12 12.01l8.73-5.05"></path>
+                                <path d="M12 22.08V12"></path>
+                            </svg>
+                        </div>
+                        <h4 class="feature-title">AI智能分析</h4>
+                        <p class="feature-description">采用先进的AI技术，为您提供个性化的心理健康分析报告</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                            </svg>
+                        </div>
+                        <h4 class="feature-title">移动友好</h4>
+                        <p class="feature-description">完美适配各种设备，随时随地进行心理测评</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section class="about-us" id="about">
+            <div class="container">
+                <div class="section-header">
+                    <h3 class="section-title">关于我们</h3>
+                    <p class="section-description">专业团队，用心服务，致力于心理健康评估与关怀</p>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-intro">
+                        <div class="about-text">
+                            <h4 class="about-subtitle">专业心理健康评估平台</h4>
+                            <p class="about-description">
+                                我们是一支由心理学专家、数据分析师和软件工程师组成的专业团队。
+                                致力于为用户提供科学、准确、易用的心理健康评估工具，
+                                帮助每个人更好地了解自己的心理状态，促进心理健康。
+                            </p>
+                            <div class="about-stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">50,000+</div>
+                                    <div class="stat-label">用户信赖</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">98%</div>
+                                    <div class="stat-label">满意度</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">24/7</div>
+                                    <div class="stat-label">在线服务</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="about-visual">
+                            <div class="about-icon">
+                                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                                    <path d="M12 6v6l4 2"/>
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+                                    <path d="M12 14c-3.31 0-6 2.69-6 6h12c0-3.31-2.69-6-6-6z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-section">
+                        <h5 class="team-title">专业团队</h5>
+                        <div class="team-grid">
+                            <div class="team-member">
+                                <div class="member-avatar">👨‍⚕️</div>
+                                <h6 class="member-name">心理学专家团队</h6>
+                                <p class="member-role">临床心理学博士</p>
+                                <p class="member-desc">拥有丰富的临床经验和专业知识</p>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-avatar">👩‍💻</div>
+                                <h6 class="member-name">技术开发团队</h6>
+                                <p class="member-role">软件工程师</p>
+                                <p class="member-desc">专注于用户体验和技术创新</p>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-avatar">📊</div>
+                                <h6 class="member-name">数据分析团队</h6>
+                                <p class="member-role">数据科学家</p>
+                                <p class="member-desc">确保测评结果的准确性和可靠性</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="values-section">
+                        <h5 class="values-title">我们的价值观</h5>
+                        <div class="values-grid">
+                            <div class="value-item">
+                                <div class="value-icon">🎯</div>
+                                <h6 class="value-title">专业严谨</h6>
+                                <p class="value-desc">基于科学理论，确保测评的专业性和准确性</p>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">🔒</div>
+                                <h6 class="value-title">隐私保护</h6>
+                                <p class="value-desc">严格保护用户隐私，数据仅存储在本地</p>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">💝</div>
+                                <h6 class="value-title">用户关怀</h6>
+                                <p class="value-desc">以用户为中心，提供贴心的服务和支持</p>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">🌟</div>
+                                <h6 class="value-title">持续创新</h6>
+                                <p class="value-desc">不断优化产品，提升用户体验</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mission-section">
+                        <div class="mission-content">
+                            <div class="mission-text">
+                                <h5 class="mission-title">我们的使命</h5>
+                                <p class="mission-desc">
+                                    让心理健康评估变得简单、准确、可及，
+                                    帮助每个人更好地了解自己，
+                                    促进全民心理健康水平的提升。
+                                </p>
+                            </div>
+                            <div class="mission-visual">
+                                <div class="mission-icon">🌈</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">心理测评中心</h4>
+                    <p class="footer-description">专业的心理健康评估平台，帮助您更好地了解自己的心理状态</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">测评服务</h4>
+                    <ul class="footer-links">
+                        <li><a href="#scl90">SCL90心理健康测评</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                        <li><a href="#features">平台特色</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">法律信息</h4>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">隐私政策</a></li>
+                        <li><a href="#terms">用户协议</a></li>
+                        <li><a href="#disclaimer">免责声明</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 心理测评中心. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/homepage.js"></script>
+</body>
+</html>

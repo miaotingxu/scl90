@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理测评 - 专业心理健康评估</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/assessment.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo"><span class="back-icon">←</span> 心理健康测评</a>
+            <div class="assessment-info">
+                <span class="assessment-title" id="assessmentTitle">心理测评</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Assessment Progress -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-info">
+                <span class="progress-text">进度: <span id="currentQuestion">0</span> / <span id="totalQuestions">0</span></span>
+                <span class="progress-percentage" id="progressPercentage">0%</span>
+            </div>
+        </div>
+
+        <!-- Assessment Content -->
+        <div class="assessment-container">
+            <!-- Welcome Screen -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="welcome-content">
+                    <div class="welcome-icon" id="welcomeIcon">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                        </svg>
+                    </div>
+                    <h2 class="welcome-title" id="welcomeTitle">欢迎参加心理测评</h2>
+                    <p class="welcome-description" id="welcomeDescription">
+                        本测评将帮助您了解自己的心理健康状况。请根据您最近一周的实际感受，选择最符合您情况的答案。
+                    </p>
+                    <div class="assessment-details" id="assessmentDetails">
+                        <div class="detail-item">
+                            <span class="detail-icon">⏱</span>
+                            <span class="detail-text">预计用时: <span id="estimatedTime">15-20分钟</span></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📋</span>
+                            <span class="detail-text">题目数量: <span id="questionCount">90道题</span></span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📝</span>
+                            <span class="detail-text">答题方式: 根据实际情况选择最符合的答案</span>
+                        </div>
+                    </div>
+                    
+                    <div class="welcome-notice" id="welcomeNotice">
+                        <h4>测评说明:</h4>
+                        <ul>
+                            <li>请根据您最近一周的实际感受作答</li>
+                            <li>没有对错之分，请选择最真实的答案</li>
+                            <li>测评结果仅供参考，不能替代专业诊断</li>
+                            <li>您的所有数据将保存在本地，不会上传到服务器</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="welcome-actions">
+                        <button class="btn btn-primary" id="startAssessment">开始测评</button>
+                        <button class="btn btn-secondary" id="backToHome">返回首页</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Screen -->
+            <div class="question-screen" id="questionScreen" style="display: none;">
+                <div class="question-container">
+                    <div class="question-header">
+                        <span class="question-number" id="questionNumber">第1题</span>
+                        <span class="question-category" id="questionCategory">躯体化</span>
+                    </div>
+                    
+                    <div class="question-content">
+                        <p class="question-text" id="questionText"></p>
+                    </div>
+                    
+                    <div class="answer-options" id="answerOptions">
+                        <!-- 动态生成答案选项 -->
+                    </div>
+                    
+                    <div class="question-navigation">
+                        <button class="btn btn-secondary" id="prevQuestion" disabled>
+                            <span class="nav-arrow">←</span> 上一题
+                        </button>
+                        
+                        <div class="question-actions">
+                            <button class="btn btn-outline" id="saveProgress">保存进度</button>
+                            <button class="btn btn-outline" id="clearAnswer">清除答案</button>
+                        </div>
+                        
+                        <button class="btn btn-primary" id="nextQuestion">
+                            下一题 <span class="nav-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completion Screen -->
+            <div class="completion-screen" id="completionScreen" style="display: none;">
+                <div class="completion-content">
+                    <div class="completion-icon">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9 12l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    
+                    <h2 class="completion-title">恭喜您完成测评！</h2>
+                    <p class="completion-description">
+                        您已完成所有题目的作答，现在我们为您生成详细的分析报告。
+                    </p>
+                    
+                    <div class="completion-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">完成题目:</span>
+                            <span class="summary-value" id="completedQuestions">90</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">用时:</span>
+                            <span class="summary-value" id="completionTime">18分钟</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">完成时间:</span>
+                            <span class="summary-value" id="completionDate">2024年1月1日</span>
+                        </div>
+                    </div>
+                    
+                    <div class="completion-actions">
+                        <button class="btn btn-primary" id="generateReport">生成分析报告</button>
+                        <button class="btn btn-secondary" id="reviewAnswers">查看答案</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container" id="fabContainer" style="display: none;">
+        <button class="fab-main" id="fabMain">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+        </button>
+        <div class="fab-menu" id="fabMenu" style="display: none;">
+            <button class="fab-item" id="fabHelp" title="帮助">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </button>
+            <button class="fab-item" id="fabSave" title="保存进度">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+            </button>
+            <button class="fab-item" id="fabExit" title="退出测评">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/assessment.js"></script>
+</body>
+</html>
