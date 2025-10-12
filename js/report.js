@@ -104,6 +104,8 @@ class ReportGenerator {
     generateReport() {
         if (this.assessmentType === 'scl90') {
             this.generateSCL90Report();
+        } else if (this.assessmentType === 'mbti') {
+            this.generateMBTIReport();
         } else {
             this.generateGenericReport();
         }
@@ -460,6 +462,374 @@ class ReportGenerator {
         `;
     }
     
+    // 生成MBTI专用报告
+    generateMBTIReport() {
+        const mbtiType = this.calculateMBTIType();
+        const analysis = this.generateMBTIAnalysis(mbtiType);
+        
+        // 更新总体评分
+        this.updateMBTIOverallScore(mbtiType, analysis);
+        
+        // 生成维度评分
+        this.generateMBTIDimensionScores(mbtiType);
+        
+        // 生成详细分析
+        this.generateMBTIDetailedAnalysis(mbtiType, analysis);
+        
+        // 生成建议
+        this.generateMBTIRecommendations(mbtiType, analysis);
+        
+        // 生成风险评估
+        this.generateMBTIRiskAssessment(mbtiType, analysis);
+    }
+    
+    // 计算MBTI类型
+    calculateMBTIType() {
+        const answers = this.reportData.answers;
+        let eCount = 0, iCount = 0;  // 外向/内向
+        let sCount = 0, nCount = 0;  // 感觉/直觉
+        let tCount = 0, fCount = 0;  // 思考/情感
+        let jCount = 0, pCount = 0;  // 判断/知觉
+        
+        // 简化的MBTI计算逻辑
+        for (let i = 0; i < Math.min(answers.length, 60); i++) {
+            const answer = answers[i];
+            if (answer !== null) {
+                // 根据题目索引判断维度
+                if (i % 4 === 0) {  // E/I 维度
+                    if (answer >= 3) eCount++; else iCount++;
+                } else if (i % 4 === 1) {  // S/N 维度
+                    if (answer >= 3) sCount++; else nCount++;
+                } else if (i % 4 === 2) {  // T/F 维度
+                    if (answer >= 3) tCount++; else fCount++;
+                } else {  // J/P 维度
+                    if (answer >= 3) jCount++; else pCount++;
+                }
+            }
+        }
+        
+        const mbtiType = 
+            (eCount > iCount ? 'E' : 'I') +
+            (sCount > nCount ? 'S' : 'N') +
+            (tCount > fCount ? 'T' : 'F') +
+            (jCount > pCount ? 'J' : 'P');
+            
+        return {
+            type: mbtiType,
+            dimensions: {
+                'EI': eCount > iCount ? 'E' : 'I',
+                'SN': sCount > nCount ? 'S' : 'N',
+                'TF': tCount > fCount ? 'T' : 'F',
+                'JP': jCount > pCount ? 'J' : 'P'
+            },
+            scores: {
+                '外向(E)': eCount,
+                '内向(I)': iCount,
+                '感觉(S)': sCount,
+                '直觉(N)': nCount,
+                '思考(T)': tCount,
+                '情感(F)': fCount,
+                '判断(J)': jCount,
+                '知觉(P)': pCount
+            }
+        };
+    }
+    
+    // 生成MBTI分析
+    generateMBTIAnalysis(mbtiType) {
+        const mbtiDescriptions = {
+            'INTJ': {
+                title: '建筑师',
+                description: '富有想象力和战略性的思想家',
+                strengths: ['战略思维', '独立自主', '追求完美'],
+                challenges: ['过于理想化', '缺乏耐心', '社交困难']
+            },
+            'INTP': {
+                title: '逻辑学家',
+                description: '具有创新精神的发明家，对知识有着止不住的渴望',
+                strengths: ['逻辑思维', '创新能力', '好奇心强'],
+                challenges: ['拖延倾向', '不善于表达', '过于理性']
+            },
+            'ENTJ': {
+                title: '指挥官',
+                description: '大胆、富有想象力和意志强烈的领导者',
+                strengths: ['领导能力', '目标导向', '决策果断'],
+                challenges: ['过于强势', '缺乏耐心', '忽视他人感受']
+            },
+            'ENTP': {
+                title: '辩论家',
+                description: '聪明好奇的思想家，不会放弃智力挑战',
+                strengths: ['创新思维', '适应性强', '善于辩论'],
+                challenges: ['注意力分散', '缺乏执行力', '争强好胜']
+            },
+            'INFJ': {
+                title: '提倡者',
+                description: '安静而神秘，同时鼓舞他人并充满热情',
+                strengths: ['洞察力强', '富有同理心', '追求意义'],
+                challenges: ['过于理想化', '容易倦怠', '过度敏感']
+            },
+            'INFP': {
+                title: '调停者',
+                description: '诗意、善良和利他的人，总是热切地帮助正义事业',
+                strengths: ['创造力强', '价值观坚定', '善解人意'],
+                challenges: ['过于理想化', '决策困难', '容易受伤']
+            },
+            'ENFJ': {
+                title: '主人公',
+                description: '有魅力、鼓舞人心的领导者，有感化他人的能力',
+                strengths: ['领导能力', '同理心强', '善于沟通'],
+                challenges: ['过度关心他人', '缺乏自我关注', '决策情绪化']
+            },
+            'ENFP': {
+                title: '竞选者',
+                description: '热情、有创造力和有社交能力的真正自由精神',
+                strengths: ['热情洋溢', '创造力强', '人际交往'],
+                challenges: ['注意力分散', '缺乏条理', '过度承诺']
+            },
+            'ISTJ': {
+                title: '物流师',
+                description: '实用且注重事实的个人，可靠性不容怀疑',
+                strengths: ['责任心强', '注重细节', '可靠稳定'],
+                challenges: ['缺乏灵活性', '过于传统', '不善变通']
+            },
+            'ISFJ': {
+                title: '守护者',
+                description: '非常专注和温暖的守护者，时刻准备保护爱的人',
+                strengths: ['细心体贴', '忠诚可靠', '服务精神'],
+                challenges: ['过度自我牺牲', '抗拒改变', '过度保护']
+            },
+            'ESTJ': {
+                title: '总经理',
+                description: '出色的管理者，在管理事物或事情方面无与伦比',
+                strengths: ['组织能力强', '务实高效', '领导能力'],
+                challenges: ['过于严格', '缺乏灵活性', '传统保守']
+            },
+            'ESFJ': {
+                title: '执政官',
+                description: '极其有同理心、受欢迎和有社交能力的人，总是热心帮助他人',
+                strengths: ['社交能力强', '关心他人', '责任感强'],
+                challenges: ['过度关心他人', '缺乏自我关注', '抗拒改变']
+            },
+            'ISTP': {
+                title: '鉴赏家',
+                description: '大胆而实用的实验家，擅长使用各种工具',
+                strengths: ['实践能力强', '冷静沉着', '适应性强'],
+                challenges: ['缺乏长期规划', '不善表达', '冒险倾向']
+            },
+            'ISFP': {
+                title: '探险家',
+                description: '灵活而有魅力的艺术家，时刻准备探索新的可能性',
+                strengths: ['艺术天赋', '温和友善', '热爱生活'],
+                challenges: ['缺乏计划性', '过于敏感', '避免冲突']
+            },
+            'ESTP': {
+                title: '企业家',
+                description: '聪明、精力充沛的感知者，真心享受生活在边缘',
+                strengths: ['适应性强', '务实高效', '乐观开朗'],
+                challenges: ['缺乏长远规划', '冲动行事', '缺乏耐心']
+            },
+            'ESFP': {
+                title: '娱乐家',
+                description: '自发的、精力充沛和热情的表演者，生活在他们周围从不缺少',
+                strengths: ['热情开朗', '人际交往', '活在当下'],
+                challenges: ['缺乏计划性', '注意力分散', '避免冲突']
+            }
+        };
+        
+        const typeInfo = mbtiDescriptions[mbtiType.type] || {
+            title: '独特个性',
+            description: '您具有独特的人格特质组合',
+            strengths: ['适应性强', '学习能力', '自我认知'],
+            challenges: ['需要发展', '平衡生活', '持续成长']
+        };
+        
+        return {
+            ...typeInfo,
+            mbtiType: mbtiType,
+            riskLevel: 'low'
+        };
+    }
+    
+    // 更新MBTI总体评分
+    updateMBTIOverallScore(mbtiType, analysis) {
+        // 更新文本内容
+        document.getElementById('overallScore').textContent = `${mbtiType.type} - ${analysis.title}`;
+        document.getElementById('overallRating').textContent = '人格类型';
+        document.getElementById('overallDescription').textContent = 
+            `您的MBTI人格类型是${mbtiType.type}（${analysis.title}）。${analysis.description}`;
+        
+        // 更新关键指标
+        document.getElementById('positiveItems').textContent = '4个维度';
+        document.getElementById('avgScore').textContent = '60道题';
+        
+        // 更新仪表盘
+        this.updateGaugeChart(8.5);
+    }
+    
+    // 生成MBTI维度评分
+    generateMBTIDimensionScores(mbtiType) {
+        const container = document.getElementById('scoresGrid');
+        container.innerHTML = '';
+        
+        const dimensions = [
+            {
+                name: '外向(E) - 内向(I)',
+                value: mbtiType.dimensions.EI,
+                description: mbtiType.dimensions.EI === 'E' ? '您更偏向外向，从社交中获得能量' : '您更偏内向，从独处中获得能量'
+            },
+            {
+                name: '感觉(S) - 直觉(N)',
+                value: mbtiType.dimensions.SN,
+                description: mbtiType.dimensions.SN === 'S' ? '您更关注具体事实和细节' : '您更关注可能性和模式'
+            },
+            {
+                name: '思考(T) - 情感(F)',
+                value: mbtiType.dimensions.TF,
+                description: mbtiType.dimensions.TF === 'T' ? '您更基于逻辑和客观分析做决定' : '您更基于价值观和他人感受做决定'
+            },
+            {
+                name: '判断(J) - 知觉(P)',
+                value: mbtiType.dimensions.JP,
+                description: mbtiType.dimensions.JP === 'J' ? '您更喜欢有计划、有组织的生活方式' : '您更喜欢灵活、随性的生活方式'
+            }
+        ];
+        
+        dimensions.forEach(dimension => {
+            const scoreCard = document.createElement('div');
+            scoreCard.className = 'score-card good';
+            
+            scoreCard.innerHTML = `
+                <div class="score-header">
+                    <div>
+                        <h4 class="score-name">${dimension.name}</h4>
+                        <span class="score-level good">偏向${dimension.value}</span>
+                    </div>
+                    <div class="score-value">${dimension.value}</div>
+                </div>
+                <p class="score-description">${dimension.description}</p>
+            `;
+            
+            container.appendChild(scoreCard);
+        });
+    }
+    
+    // 生成MBTI详细分析
+    generateMBTIDetailedAnalysis(mbtiType, analysis) {
+        const container = document.getElementById('analysisContent');
+        
+        const analysisSections = [
+            {
+                title: `${mbtiType.type} - ${analysis.title}`,
+                icon: '🧠',
+                content: `${analysis.description}。您在四个维度上的偏好组合形成了独特的人格特质。`
+            },
+            {
+                title: '核心优势',
+                icon: '💪',
+                content: `您的主要优势包括：${analysis.strengths.join('、')}。这些特质使您在特定的环境和情境中表现出色。`
+            },
+            {
+                title: '发展建议',
+                icon: '🎯',
+                content: `您可以关注以下方面的成长：${analysis.challenges.join('、')}。认识到这些潜在挑战有助于您的个人发展。`
+            }
+        ];
+        
+        container.innerHTML = analysisSections.map(section => `
+            <div class="analysis-section">
+                <h3 class="analysis-title">
+                    <span class="analysis-icon">${section.icon}</span>
+                    ${section.title}
+                </h3>
+                <div class="analysis-text">${section.content}</div>
+            </div>
+        `).join('');
+    }
+    
+    // 生成MBTI建议
+    generateMBTIRecommendations(mbtiType, analysis) {
+        const container = document.getElementById('recommendationsGrid');
+        
+        const recommendations = [
+            {
+                title: '了解您的优势',
+                description: '深入了解并发挥您的${analysis.strengths[0]}特质，在工作和生活中找到适合发挥这些优势的领域。',
+                icon: '🎯',
+                priority: 'high',
+                tags: ['优势发展', '自我认知']
+            },
+            {
+                title: '平衡发展',
+                description: '关注您的${analysis.challenges[0]}倾向，尝试在保持本色的同时发展相对薄弱的方面。',
+                icon: '⚖️',
+                priority: 'medium',
+                tags: ['个人成长', '平衡发展']
+            },
+            {
+                title: '适合的职业方向',
+                description: '基于您的${mbtiType.type}人格类型，考虑选择与您天性相符的职业发展路径。',
+                icon: '💼',
+                priority: 'medium',
+                tags: ['职业规划', '发展方向']
+            },
+            {
+                title: '人际关系建议',
+                description: '了解您的人格特质如何影响人际交往，建立更和谐的社交关系。',
+                icon: '👥',
+                priority: 'medium',
+                tags: ['人际关系', '沟通技巧']
+            }
+        ];
+        
+        container.innerHTML = recommendations.map(rec => `
+            <div class="recommendation-card">
+                <div class="recommendation-header">
+                    <div class="recommendation-icon">${rec.icon}</div>
+                    <h4 class="recommendation-title">${rec.title}</h4>
+                </div>
+                <p class="recommendation-description">${rec.description}</p>
+                <div class="recommendation-actions">
+                    <span class="recommendation-tag ${rec.priority}">${rec.priority === 'high' ? '高优先级' : rec.priority === 'medium' ? '中优先级' : '低优先级'}</span>
+                    ${rec.tags.map(tag => `<span class="recommendation-tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // 生成MBTI风险评估
+    generateMBTIRiskAssessment(mbtiType, analysis) {
+        const container = document.getElementById('riskContent');
+        
+        container.innerHTML = `
+            <div class="risk-level low">
+                <span>🟢</span>
+                风险等级: 低风险
+            </div>
+            <p class="risk-description">
+                MBTI人格测试是性格评估工具，不存在心理健康风险。您的${mbtiType.type}人格类型代表您的自然偏好和倾向，没有好坏之分。
+                建议您将测试结果作为自我了解和发展的参考，而不是评判自己的标准。
+            </p>
+            <div class="risk-indicators">
+                <div class="risk-indicator">
+                    <div class="indicator-label">人格类型</div>
+                    <div class="indicator-value">${mbtiType.type}</div>
+                </div>
+                <div class="risk-indicator">
+                    <div class="indicator-label">核心优势</div>
+                    <div class="indicator-value">${analysis.strengths.length}项</div>
+                </div>
+                <div class="risk-indicator">
+                    <div class="indicator-label">发展建议</div>
+                    <div class="indicator-value">${analysis.challenges.length}项</div>
+                </div>
+                <div class="risk-indicator">
+                    <div class="indicator-label">风险等级</div>
+                    <div class="indicator-value">低风险</div>
+                </div>
+            </div>
+        `;
+    }
+    
     // 生成通用报告（非SCL90）
     generateGenericReport() {
         // 这里可以实现其他测评类型的报告生成逻辑
@@ -494,22 +864,303 @@ class ReportGenerator {
     
     // 下载报告
     downloadReport() {
-        const element = document.getElementById('reportContent');
-        const opt = {
-            margin: 10,
-            filename: `心理测评报告_${new Date().toLocaleDateString('zh-CN')}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        this.generatePDFReport();
+    }
+    
+    // 生成PDF报告
+    generatePDFReport() {
+        const assessmentData = getAssessmentConfig(this.assessmentType);
+        const reportTitle = `${assessmentData.title}报告`;
+        
+        // 创建打印样式
+        this.setupPrintStyles();
+        
+        // 准备报告数据
+        const reportData = this.preparePDFData();
+        
+        // 创建新窗口用于打印
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) {
+            alert('请允许弹出窗口以生成PDF报告');
+            return;
+        }
+        
+        // 生成打印内容
+        const printContent = this.generatePrintHTML(reportTitle, reportData);
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        
+        // 等待内容加载完成后触发打印
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 1000);
+    }
+    
+    // 设置打印样式
+    setupPrintStyles() {
+        const printStyles = `
+            @media print {
+                body * {
+                    visibility: hidden;
+                }
+                #reportContent, #reportContent * {
+                    visibility: visible;
+                }
+                #reportContent {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                }
+                .report-actions, .dashboard-header {
+                    display: none !important;
+                }
+                .loading-screen {
+                    display: none !important;
+                }
+                .section-title {
+                    page-break-after: avoid;
+                    margin-top: 20px;
+                }
+                .score-card, .recommendation-card {
+                    page-break-inside: avoid;
+                }
+            }
+        `;
+        
+        // 检查是否已存在打印样式
+        let printStyleElement = document.getElementById('print-styles');
+        if (!printStyleElement) {
+            printStyleElement = document.createElement('style');
+            printStyleElement.id = 'print-styles';
+            printStyleElement.type = 'text/css';
+            printStyleElement.innerHTML = printStyles;
+            document.head.appendChild(printStyleElement);
+        }
+    }
+    
+    // 准备PDF数据
+    preparePDFData() {
+        const now = new Date();
+        const reportData = {
+            reportTitle: document.getElementById('reportTitle')?.textContent || '心理测评报告',
+            reportSubtitle: document.getElementById('reportSubtitle')?.textContent || '',
+            reportDate: document.getElementById('reportDate')?.textContent || now.toLocaleDateString('zh-CN'),
+            reportDuration: document.getElementById('reportDuration')?.textContent || '未知',
+            reportId: document.getElementById('reportId')?.textContent || 'N/A',
+            overallScore: document.getElementById('overallScore')?.textContent || '未知',
+            overallDescription: document.getElementById('overallDescription')?.textContent || '',
+            assessmentType: this.assessmentType,
+            sections: []
         };
         
-        // 使用html2pdf.js库（需要在页面中引入）
-        if (typeof html2pdf !== 'undefined') {
-            html2pdf().set(opt).from(element).save();
-        } else {
-            // 备用方案：打印页面
-            window.print();
+        // 收集各部分内容
+        const scoreCards = document.querySelectorAll('.score-card');
+        if (scoreCards.length > 0) {
+            reportData.sections.push({
+                title: '维度评分',
+                items: Array.from(scoreCards).map(card => {
+                    const title = card.querySelector('.score-name')?.textContent || '';
+                    const value = card.querySelector('.score-value')?.textContent || '';
+                    const description = card.querySelector('.score-description')?.textContent || '';
+                    return { title, value, description };
+                })
+            });
         }
+        
+        const analysisSections = document.querySelectorAll('.analysis-section');
+        if (analysisSections.length > 0) {
+            reportData.sections.push({
+                title: '详细分析',
+                items: Array.from(analysisSections).map(section => {
+                    const title = section.querySelector('.analysis-title')?.textContent || '';
+                    const content = section.querySelector('.analysis-text')?.textContent || '';
+                    return { title, content };
+                })
+            });
+        }
+        
+        const recommendationCards = document.querySelectorAll('.recommendation-card');
+        if (recommendationCards.length > 0) {
+            reportData.sections.push({
+                title: '个性化建议',
+                items: Array.from(recommendationCards).map(card => {
+                    const title = card.querySelector('.recommendation-title')?.textContent || '';
+                    const description = card.querySelector('.recommendation-description')?.textContent || '';
+                    return { title, description };
+                })
+            });
+        }
+        
+        const riskContent = document.querySelector('.risk-description');
+        const riskLevel = document.querySelector('.risk-level');
+        if (riskContent && riskLevel) {
+            reportData.sections.push({
+                title: '风险评估',
+                items: [
+                    { title: '风险等级', content: riskLevel?.textContent || '' },
+                    { title: '详细说明', content: riskContent?.textContent || '' }
+                ]
+            });
+        }
+        
+        return reportData;
+    }
+    
+    // 生成打印HTML
+    generatePrintHTML(reportTitle, reportData) {
+        const currentDate = new Date().toLocaleDateString('zh-CN');
+        
+        return `
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${reportTitle}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #1976D2;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .meta-info {
+            display: flex;
+            justify-content: space-around;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .meta-item {
+            text-align: center;
+        }
+        .meta-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .meta-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1976D2;
+            border-left: 4px solid #1976D2;
+            padding-left: 10px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+        .item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 8px;
+            border-left: 3px solid #1976D2;
+        }
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1976D2;
+        }
+        .item-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+        @media print {
+            body { margin: 0; }
+            .section { page-break-inside: avoid; }
+            .item { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">${reportData.reportTitle}</div>
+        <div class="subtitle">${reportData.reportSubtitle}</div>
+        <div class="meta-info">
+            <div class="meta-item">
+                <div class="meta-label">测评日期</div>
+                <div class="meta-value">${reportData.reportDate}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">完成用时</div>
+                <div class="meta-value">${reportData.reportDuration}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">报告编号</div>
+                <div class="meta-value">${reportData.reportId}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">测评结果概述</div>
+        <div class="item">
+            <div class="item-title">总体评估</div>
+            <div class="item-content">
+                <strong>${reportData.overallScore}</strong><br>
+                ${reportData.overallDescription}
+            </div>
+        </div>
+    </div>
+    
+    ${reportData.sections.map(section => `
+        <div class="section">
+            <div class="section-title">${section.title}</div>
+            ${section.items.map(item => `
+                <div class="item">
+                    <div class="item-title">${item.title}${item.value ? ` - ${item.value}` : ''}</div>
+                    <div class="item-content">${item.description || item.content}</div>
+                </div>
+            `).join('')}
+        </div>
+    `).join('')}
+    
+    <div class="footer">
+        <p>本报告由心理健康测评系统自动生成</p>
+        <p>生成时间: ${currentDate}</p>
+        <p>注意：本报告仅供参考，不能替代专业医疗诊断。如有需要，请咨询专业心理健康医生。</p>
+    </div>
+</body>
+</html>
+        `;
     }
     
     // 分享报告

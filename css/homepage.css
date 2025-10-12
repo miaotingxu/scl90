@@ -237,8 +237,9 @@
 }
 
 .module-card.featured {
-    border: 2px solid var(--primary-blue);
+    border: 1px solid rgba(25, 118, 210, 0.15);
     background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--primary-light) 100%);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.08);
 }
 
 .module-card.featured::before {
@@ -337,7 +338,7 @@
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 500;
-    border: 1px solid rgba(25, 118, 210, 0.2);
+    border: 1px solid rgba(25, 118, 210, 0.15);
     transition: all 0.2s ease;
 }
 
@@ -522,6 +523,12 @@
 
 .module-card.featured .btn {
     animation: pulse 2s ease-in-out infinite;
+}
+
+/* Featured模块的标签样式优化 */
+.module-card.featured .feature-tag {
+    border-color: rgba(25, 118, 210, 0.2);
+    background: rgba(25, 118, 210, 0.08);
 }
 
 /* 按钮文字光效 */
