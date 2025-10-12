@@ -9,6 +9,20 @@ class ReportGenerator {
         this.init();
     }
     
+    // 格式化时间显示（精确到秒）
+    formatDuration(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        
+        if (minutes === 0) {
+            return `${seconds}秒`;
+        } else if (seconds === 0) {
+            return `${minutes}分钟`;
+        } else {
+            return `${minutes}分${seconds}秒`;
+        }
+    }
+    
     init() {
         this.loadReportData();
         this.setupEventListeners();
@@ -51,8 +65,8 @@ class ReportGenerator {
         const completedDate = new Date(this.reportData.completedAt || this.reportData.endTime);
         document.getElementById('reportDate').textContent = completedDate.toLocaleDateString('zh-CN');
         
-        // 用时
-        document.getElementById('reportDuration').textContent = `${this.reportData.duration}分钟`;
+        // 用时（格式化显示）
+        document.getElementById('reportDuration').textContent = this.formatDuration(this.reportData.duration);
         
         // 报告编号
         const reportId = `PSY-${completedDate.getFullYear()}${String(completedDate.getMonth() + 1).padStart(2, '0')}${String(completedDate.getDate()).padStart(2, '0')}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
@@ -855,7 +869,7 @@ class ReportGenerator {
                 </h3>
                 <div class="analysis-text">
                     <p>您已完成${assessmentData.title}，平均得分为${avgScore.toFixed(2)}分。\u003c/p>
-                    <p>测评用时${this.reportData.duration}分钟，完成${this.reportData.answers.filter(a => a !== null).length}道题目。\u003c/p>
+                    <p>测评用时${this.formatDuration(this.reportData.duration)}，完成${this.reportData.answers.filter(a => a !== null).length}道题目。\u003c/p>
                     <p>详细的分析报告功能正在开发中，敬请期待。\u003c/p>
                 </div>
             </div>

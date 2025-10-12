@@ -12,6 +12,20 @@ class AssessmentManager {
         this.init();
     }
     
+    // 格式化时间显示（精确到秒）
+    formatDuration(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        
+        if (minutes === 0) {
+            return `${seconds}秒`;
+        } else if (seconds === 0) {
+            return `${minutes}分钟`;
+        } else {
+            return `${minutes}分${seconds}秒`;
+        }
+    }
+    
     init() {
         this.loadAssessmentType();
         this.setupEventListeners();
@@ -402,28 +416,28 @@ class AssessmentManager {
             clearInterval(this.autoSaveInterval);
         }
         
-        // 计算用时
-        const duration = Math.round((this.endTime - this.startTime) / 1000 / 60); // 分钟
+        // 计算用时（精确到秒）
+        const durationInSeconds = Math.round((this.endTime - this.startTime) / 1000); // 秒
         
         // 显示完成页面
-        this.showCompletionScreen(duration);
+        this.showCompletionScreen(durationInSeconds);
         
         // 保存完成状态
-        this.saveCompletionState(duration);
+        this.saveCompletionState(durationInSeconds);
         
         // 清理进度保存
         localStorage.removeItem(`assessment_${this.currentType}_progress`);
     }
     
     // 显示完成页面
-    showCompletionScreen(duration) {
+    showCompletionScreen(durationInSeconds) {
         document.getElementById('welcomeScreen').style.display = 'none';
         document.getElementById('questionScreen').style.display = 'none';
         document.getElementById('completionScreen').style.display = 'block';
         
         // 更新完成信息
         document.getElementById('completedQuestions').textContent = this.assessmentData.questionCount;
-        document.getElementById('completionTime').textContent = `${duration}分钟`;
+        document.getElementById('completionTime').textContent = this.formatDuration(durationInSeconds);
         document.getElementById('completionDate').textContent = new Date().toLocaleDateString('zh-CN');
     }
     
@@ -436,7 +450,7 @@ class AssessmentManager {
             answers: this.answers,
             startTime: this.startTime,
             endTime: this.endTime,
-            duration: Math.round((this.endTime - this.startTime) / 1000 / 60)
+            duration: Math.round((this.endTime - this.startTime) / 1000), // 秒
         };
         
         localStorage.setItem('currentReport', JSON.stringify(reportData));
@@ -473,14 +487,14 @@ class AssessmentManager {
     }
     
     // 保存完成状态
-    saveCompletionState(duration) {
+    saveCompletionState(durationInSeconds) {
         const completion = {
             type: this.currentType,
             title: this.assessmentData.title,
             answers: this.answers,
             startTime: this.startTime,
             endTime: this.endTime,
-            duration: duration,
+            duration: durationInSeconds, // 秒
             completedAt: new Date().toISOString()
         };
         
