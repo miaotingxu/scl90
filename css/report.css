@@ -90,17 +90,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 2.5rem 3rem;
     background: linear-gradient(135deg, var(--report-primary) 0%, var(--report-secondary) 100%);
     border-radius: 12px 12px 0 0;
     color: white;
     margin: -2rem -2rem 2rem -2rem;
+    min-height: 100px;
 }
 
 .dashboard-badge {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
+    margin-left: 1rem;
 }
 
 .badge-icon {
@@ -109,7 +111,7 @@
 }
 
 .badge-text {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: 0.5px;
 }
@@ -117,12 +119,13 @@
 .report-status {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    margin-right: 1rem;
 }
 
 .status-indicator {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     background: var(--report-success);
     animation: pulse 1.5s infinite;
@@ -134,7 +137,8 @@
 }
 
 .status-text {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: 500;
     opacity: 0.95;
 }
 
@@ -142,7 +146,19 @@
 .report-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .report-container {
+        padding: 2.5rem 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .report-container {
+        padding: 3rem 2.5rem;
+    }
 }
 
 .report-content {
@@ -151,6 +167,7 @@
     box-shadow: var(--report-shadow);
     overflow: hidden;
     border: 1px solid var(--report-border);
+    margin: 0 auto;
 }
 
 .loading-steps {
@@ -214,10 +231,17 @@
 .report-header {
     background: linear-gradient(135deg, var(--report-primary) 0%, var(--report-secondary) 100%);
     color: white;
-    padding: 3rem;
+    padding: 3rem 2rem 2.5rem;
     text-align: center;
     position: relative;
     overflow: hidden;
+    margin: 0 auto;
+    max-width: 1200px;
+    border-radius: 0 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 200px;
 }
 
 .report-header::before {
@@ -285,24 +309,46 @@
 }
 
 .report-title-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     position: relative;
     z-index: 1;
+    padding: 0 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* Professional Assessment Overview */
 .assessment-overview {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     background: linear-gradient(135deg, var(--report-bg) 0%, var(--report-card) 100%);
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .assessment-overview {
+        padding: 2.5rem 2rem;
+        margin: 1.5rem 0;
+    }
 }
 
 .overview-card {
     background: var(--report-card);
     border-radius: 16px;
-    padding: 2.5rem;
+    padding: 2rem 1.5rem;
     box-shadow: var(--report-shadow);
     transition: all 0.3s ease;
     border: 1px solid var(--report-border);
+}
+
+@media (min-width: 768px) {
+    .overview-card {
+        padding: 2.5rem 2rem;
+    }
 }
 
 .overview-card:hover {
@@ -513,38 +559,51 @@
 .report-title {
     font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     line-height: 1.2;
+    letter-spacing: -0.025em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 2rem;
+    margin-top: auto;
+    margin-bottom: 0.75rem;
 }
 
 .report-subtitle {
     font-size: 1.1rem;
     opacity: 0.9;
     margin-bottom: 0;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    padding: 0 2rem;
+    margin-top: 0;
 }
 
 .report-meta {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 3rem;
     flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .meta-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.5rem;
 }
 
 .meta-label {
-    font-size: 0.9rem;
+    font-size: 1rem;
     opacity: 0.8;
     font-weight: 500;
 }
 
 .meta-value {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 600;
 }
 
@@ -614,16 +673,25 @@
 
 /* Dimension Scores - 专业维度评分 */
 .dimension-scores {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     background: var(--report-bg);
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .dimension-scores {
+        padding: 2.5rem 2rem;
+        margin: 1.5rem 0;
+    }
 }
 
 .section-title {
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--report-text);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     text-align: center;
+    padding: 0 1rem;
 }
 
 .section-subtitle {
@@ -746,11 +814,19 @@
 
 /* Professional Radar Chart Section */
 .radar-section {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     background: var(--report-card);
     border-radius: 12px;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     box-shadow: var(--report-shadow);
+    border: 1px solid var(--report-border);
+}
+
+@media (min-width: 768px) {
+    .radar-section {
+        padding: 2.5rem 2rem;
+        margin: 2rem 0;
+    }
 }
 
 .radar-container {
@@ -1050,8 +1126,16 @@
 
 /* Detailed Analysis */
 .detailed-analysis {
-    padding: 3rem;
+    padding: 2rem 1.5rem;
     background: #F8FAFC;
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .detailed-analysis {
+        padding: 2.5rem 2rem;
+        margin: 1.5rem 0;
+    }
 }
 
 .analysis-content {
@@ -1108,7 +1192,16 @@
 
 /* Recommendations */
 .recommendations {
-    padding: 3rem;
+    padding: 2rem 1.5rem;
+    background: var(--report-card);
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .recommendations {
+        padding: 2.5rem 2rem;
+        margin: 1.5rem 0;
+    }
 }
 
 .recommendations-grid {
@@ -1189,8 +1282,16 @@
 
 /* Risk Assessment */
 .risk-assessment {
-    padding: 3rem;
+    padding: 2rem 1.5rem;
     background: #F8FAFC;
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .risk-assessment {
+        padding: 2.5rem 2rem;
+        margin: 1.5rem 0;
+    }
 }
 
 .risk-content {
@@ -1258,9 +1359,17 @@
 
 /* Disclaimer */
 .disclaimer {
-    padding: 3rem;
+    padding: 2rem 1.5rem;
     background: #FEF3C7;
     border-top: 1px solid #F59E0B;
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .disclaimer {
+        padding: 2rem 2rem;
+        margin: 1.5rem 0;
+    }
 }
 
 .disclaimer-content h4 {
@@ -1286,12 +1395,20 @@
 
 /* Report Actions */
 .report-actions {
-    padding: 3rem;
+    padding: 2rem 1.5rem;
     background: #F8FAFC;
     display: flex;
     justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .report-actions {
+        padding: 2.5rem 2rem;
+        margin: 1.5rem 0;
+    }
 }
 
 /* Responsive Design */
@@ -1306,7 +1423,8 @@
     }
     
     .report-header {
-        padding: 2rem;
+        padding: 2rem 1.5rem;
+        min-height: 180px;
     }
     
     .report-title {
@@ -1370,6 +1488,45 @@
         gap: 1.5rem;
     }
     
+    /* 调整报告头部的移动端间距 */
+    .dashboard-header {
+        padding: 2rem 2rem;
+        min-height: 80px;
+    }
+    
+    .dashboard-badge {
+        margin-left: 0.5rem;
+    }
+    
+    .report-status {
+        margin-right: 0.5rem;
+    }
+    
+    .badge-text {
+        font-size: 1rem;
+    }
+    
+    .status-text {
+        font-size: 1rem;
+    }
+    
+    .report-title {
+        padding: 0 1rem;
+    }
+    
+    .report-subtitle {
+        padding: 0 1rem;
+    }
+    
+    .report-title-section {
+        padding: 0 1rem;
+    }
+    
+    .report-meta {
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+    
     .radar-chart-container {
         height: 300px;
         padding: 0.5rem;
@@ -1418,7 +1575,8 @@
     }
     
     .report-header {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
+        min-height: 160px;
     }
     
     .report-title {

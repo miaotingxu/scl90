@@ -636,34 +636,45 @@ class ReportGenerator {
     
     // 生成雷达图
     generateRadarChart(scores) {
-        // 创建雷达图容器
-        const radarContainer = document.querySelector('.radar-chart');
-        if (!radarContainer) {
-            // 如果容器不存在，先创建雷达图区域
-            this.createRadarChartSection();
-            return;
-        }
+        // 先创建雷达图区域
+        this.createRadarChartSection();
         
-        // 准备雷达图数据
-        const dimensions = [];
-        const values = [];
-        const maxValue = 5;
-        
-        for (const [dimension, data] of Object.entries(scores)) {
-            if (dimension !== 'totalScore' && dimension !== 'positiveSymptomCount' && dimension !== 'averageScore') {
-                dimensions.push(dimension);
-                values.push(data.average);
+        // 等待DOM更新后获取雷达图容器
+        setTimeout(() => {
+            const radarContainer = document.querySelector('.radar-chart');
+            if (!radarContainer) {
+                console.error('雷达图容器创建失败');
+                return;
             }
-        }
-        
-        // 绘制雷达图
-        this.drawRadarChart(radarContainer, dimensions, values, maxValue);
+            
+            // 准备雷达图数据
+            const dimensions = [];
+            const values = [];
+            const maxValue = 5;
+            
+            for (const [dimension, data] of Object.entries(scores)) {
+                if (dimension !== 'totalScore' && dimension !== 'positiveSymptomCount' && dimension !== 'averageScore') {
+                    dimensions.push(dimension);
+                    values.push(data.average);
+                }
+            }
+            
+            // 确保有数据才绘制
+            if (dimensions.length > 0 && values.length > 0) {
+                this.drawRadarChart(radarContainer, dimensions, values, maxValue);
+            }
+        }, 100);
     }
     
     // 创建雷达图区域
     createRadarChartSection() {
         const dimensionScores = document.querySelector('.dimension-scores');
         if (!dimensionScores) return;
+        
+        // 检查是否已经存在雷达图区域
+        if (document.querySelector('.radar-section')) {
+            return;
+        }
         
         const radarSection = document.createElement('div');
         radarSection.className = 'radar-section';
@@ -689,13 +700,27 @@ class ReportGenerator {
     // 绘制雷达图
     drawRadarChart(canvas, dimensions, values, maxValue) {
         const ctx = canvas.getContext('2d');
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const radius = Math.min(centerX, centerY) - 40;
+        if (!ctx) {
+            console.error('无法获取2D渲染上下文');
+            return;
+        }
+        
+        // 设置canvas实际尺寸
+        const displayWidth = 400;
+        const displayHeight = 400;
+        canvas.style.width = displayWidth + 'px';
+        canvas.style.height = displayHeight + 'px';
+        canvas.width = displayWidth * 2; // 高DPI支持
+        canvas.height = displayHeight * 2;
+        ctx.scale(2, 2);
+        
+        const centerX = displayWidth / 2;
+        const centerY = displayHeight / 2;
+        const radius = Math.min(centerX, centerY) - 50;
         const angleStep = (2 * Math.PI) / dimensions.length;
         
         // 清空画布
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, displayWidth, displayHeight);
         
         // 绘制背景网格
         this.drawRadarGrid(ctx, centerX, centerY, radius, dimensions.length, maxValue);
@@ -777,25 +802,33 @@ class ReportGenerator {
     // 绘制雷达图标签
     drawRadarLabels(ctx, centerX, centerY, radius, dimensions, angleStep) {
         ctx.fillStyle = '#374151';
-        ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
         for (let i = 0; i < dimensions.length; i++) {
             const angle = i * angleStep - Math.PI / 2;
-            const labelRadius = radius + 20;
+            const labelRadius = radius + 25;
             const x = centerX + Math.cos(angle) * labelRadius;
             const y = centerY + Math.sin(angle) * labelRadius;
             
             // 调整文本对齐方式
             if (Math.cos(angle) > 0.1) {
-                ctx.textAlign = 'left';
+                ctx.textAlign = 'start';
             } else if (Math.cos(angle) < -0.1) {
-                ctx.textAlign = 'right';
+                ctx.textAlign = 'end';
             } else {
                 ctx.textAlign = 'center';
             }
             
+            // 添加背景以提高可读性
+            ctx.save();
+            const textWidth = ctx.measureText(dimensions[i]).width;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.fillRect(x - textWidth/2 - 2, y - 8, textWidth + 4, 16);
+            ctx.restore();
+            
+            ctx.fillStyle = '#374151';
             ctx.fillText(dimensions[i], x, y);
         }
     }
