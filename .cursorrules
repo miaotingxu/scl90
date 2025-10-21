@@ -12,6 +12,52 @@
 
 ---
 
+## AI 命令执行规范
+
+### 命令执行策略
+当用户启用自动执行模式时，AI 应智能判断命令的安全级别：
+
+#### 🟢 安全命令（直接执行，无需额外说明）
+- **只读查询**：`git status`, `git log`, `git diff`, `git branch`
+- **文件查看**：`cat`, `type`, `ls`, `dir`, `tree`
+- **信息获取**：`npm list`, `node --version`, `git --version`
+- **测试命令**：`npm test`, `npm run lint`
+
+#### 🟡 修改命令（先简要说明操作内容，然后执行）
+- **Git 操作**：`git add`, `git commit`, `git checkout`
+- **包管理**：`npm install`, `npm uninstall`, `npm update`
+- **文件操作**：`mkdir`, `touch`, 创建新文件
+- **构建命令**：`npm run build`, `npm run dev`
+
+#### 🔴 危险命令（明确警告风险，等待用户确认）
+- **强制操作**：`git push --force`, `git reset --hard`
+- **删除操作**：`rm -rf`, `git clean -fd`, `Remove-Item -Recurse`
+- **系统修改**：修改 Git 全局配置、系统环境变量
+- **不可逆操作**：任何带有 `--force`, `--hard`, `-f` 的命令
+
+### 命令执行原则
+1. **透明性**：对于修改类命令，简要说明将要做什么
+2. **安全性**：对于危险命令，明确说明风险并建议备份
+3. **效率性**：对于安全的只读命令，直接执行提高效率
+4. **可追溯**：重要操作后，说明已完成的内容和影响
+
+### 示例
+```
+用户："查看 git 状态"
+AI：[直接执行 git status，显示结果]
+
+用户："提交代码"
+AI："我将执行 git add 和 git commit..."
+    [执行命令，显示结果]
+
+用户："强制推送"
+AI："⚠️ 警告：git push --force 会覆盖远程历史，
+    如果有团队协作可能造成问题。建议使用 git push --force-with-lease。
+    是否继续？"
+```
+
+---
+
 ## 代码风格规范
 
 ### JavaScript 规范
@@ -211,6 +257,20 @@ feat: 添加测评进度保存功能
 - 添加"继续测评"和"重新开始"选项
 
 Closes #12
+```
+
+### 提交信息最佳实践
+- **语言选择**：建议使用英文提交信息，避免编码问题
+- **简洁明了**：首行不超过 50 字符，详细描述不超过 72 字符每行
+- **现在时态**：使用祈使句，如 "add" 而非 "added"
+- **原子性提交**：每次提交只做一件事，便于回滚和审查
+
+### Git 配置（已自动配置）
+项目已配置 Git 使用 UTF-8 编码，支持中文提交信息：
+```bash
+git config --global i18n.commitencoding utf-8
+git config --global i18n.logoutputencoding utf-8
+git config --global core.quotepath false
 ```
 
 ---
