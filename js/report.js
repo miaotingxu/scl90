@@ -767,21 +767,21 @@ class ReportGenerator {
         const recommendations = [
             {
                 title: '了解您的优势',
-                description: '深入了解并发挥您的${analysis.strengths[0]}特质，在工作和生活中找到适合发挥这些优势的领域。',
+                description: `深入了解并发挥您的${analysis.strengths[0] || '独特'}特质，在工作和生活中找到适合发挥这些优势的领域。`,
                 icon: '🎯',
                 priority: 'high',
                 tags: ['优势发展', '自我认知']
             },
             {
                 title: '平衡发展',
-                description: '关注您的${analysis.challenges[0]}倾向，尝试在保持本色的同时发展相对薄弱的方面。',
+                description: `关注您的${analysis.challenges[0] || '需要关注'}倾向，尝试在保持本色的同时发展相对薄弱的方面。`,
                 icon: '⚖️',
                 priority: 'medium',
                 tags: ['个人成长', '平衡发展']
             },
             {
                 title: '适合的职业方向',
-                description: '基于您的${mbtiType.type}人格类型，考虑选择与您天性相符的职业发展路径。',
+                description: `基于您的${mbtiType.type}人格类型，考虑选择与您天性相符的职业发展路径。`,
                 icon: '💼',
                 priority: 'medium',
                 tags: ['职业规划', '发展方向']
@@ -868,9 +868,9 @@ class ReportGenerator {
                     测评结果分析
                 </h3>
                 <div class="analysis-text">
-                    <p>您已完成${assessmentData.title}，平均得分为${avgScore.toFixed(2)}分。\u003c/p>
-                    <p>测评用时${this.formatDuration(this.reportData.duration)}，完成${this.reportData.answers.filter(a => a !== null).length}道题目。\u003c/p>
-                    <p>详细的分析报告功能正在开发中，敬请期待。\u003c/p>
+                    <p>您已完成${assessmentData.title}，平均得分为${avgScore.toFixed(2)}分。</p>
+                    <p>测评用时${this.formatDuration(this.reportData.duration)}，完成${this.reportData.answers.filter(a => a !== null).length}道题目。</p>
+                    <p>详细的分析报告功能正在开发中，敬请期待。</p>
                 </div>
             </div>
         `;
@@ -957,6 +957,9 @@ class ReportGenerator {
     // 准备PDF数据
     preparePDFData() {
         const now = new Date();
+        const positiveItems = document.getElementById('positiveItems')?.textContent || '0';
+        const avgScore = document.getElementById('avgScore')?.textContent || 'N/A';
+        
         const reportData = {
             reportTitle: document.getElementById('reportTitle')?.textContent || '心理测评报告',
             reportSubtitle: document.getElementById('reportSubtitle')?.textContent || '',
@@ -965,6 +968,8 @@ class ReportGenerator {
             reportId: document.getElementById('reportId')?.textContent || 'N/A',
             overallScore: document.getElementById('overallScore')?.textContent || '未知',
             overallDescription: document.getElementById('overallDescription')?.textContent || '',
+            positiveItems: positiveItems,
+            avgScore: avgScore,
             assessmentType: this.assessmentType,
             sections: []
         };
@@ -1494,7 +1499,7 @@ class ReportGenerator {
                                 <div class="metric-label">${isMBTI ? '道题' : '阳性项目'}</div>
                             </div>
                             <div class="metric-item">
-                                <div class="metric-value">${reportData.avgScore || 'N/A'}</div>
+                                <div class="metric-value">${isMBTI ? '60' : reportData.avgScore}</div>
                                 <div class="metric-label">${isMBTI ? '道题' : '平均得分'}</div>
                             </div>
                         </div>

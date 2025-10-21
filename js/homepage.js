@@ -1,285 +1,98 @@
-// 首页交互逻辑
+// SCL90专用首页交互逻辑
 
 document.addEventListener('DOMContentLoaded', function() {
-    // 模块导航
-    const moduleCards = document.querySelectorAll('.module-card');
-    
-    moduleCards.forEach(card => {
-        const moduleType = card.dataset.module;
-        const button = card.querySelector('.btn');
-        
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // 添加点击动画
-            button.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                button.style.transform = '';
-            }, 150);
-            
-            // 导航到对应模块
-            navigateToModule(moduleType);
-        });
-        
-        // 卡片悬停效果
-        card.addEventListener('mouseenter', function() {
-            const icon = card.querySelector('.module-icon');
-            icon.style.transform = 'scale(1.1) rotate(5deg)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            const icon = card.querySelector('.module-icon');
-            icon.style.transform = '';
-        });
-    });
-    
     // 平滑滚动
-    const navLinks = document.querySelectorAll('.nav-link');
+    setupSmoothScroll();
+    
+    // 导航激活状态
+    setupNavigation();
+    
+    // 开始测评按钮
+    setupStartButtons();
+    
+    // 滚动动画
+    setupScrollAnimations();
+    
+    // 统计数字动画
+    setupCounterAnimation();
+});
+
+// 设置平滑滚动
+function setupSmoothScroll() {
+    const navLinks = document.querySelectorAll('a[href^="#"]');
+    
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             
-            if (targetId.startsWith('#')) {
+            if (targetId === '#') return;
+            
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
-                    
-                    // 更新活跃导航链接
-                    navLinks.forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
-                }
             }
         });
-    });
-    
-    // 滚动动画
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // 观察模块卡片
-    moduleCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
-    });
-    
-    // 观察特性项目
-    const featureItems = document.querySelectorAll('.feature-item');
-    featureItems.forEach(item => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(30px)';
-        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(item);
-    });
-    
-    // 统计数字动画
-    animateStats();
-    
-    // 搜索功能
-    setupSearchFunctionality();
-    
-    // 键盘导航支持
-    setupKeyboardNavigation();
-    
-    // 关于我们模块动画
-    setupAboutUsAnimations();
-});
-
-// 关于我们模块动画
-function setupAboutUsAnimations() {
-    const aboutSection = document.querySelector('.about-us');
-    if (!aboutSection) return;
-    
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // 统计卡片动画
-                const statCards = entry.target.querySelectorAll('.stat-card');
-                statCards.forEach((card, index) => {
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, index * 100);
-                });
-                
-                // 团队成员动画
-                const teamMembers = entry.target.querySelectorAll('.team-member');
-                teamMembers.forEach((member, index) => {
-                    setTimeout(() => {
-                        member.style.opacity = '1';
-                        member.style.transform = 'translateY(0)';
-                    }, index * 150);
-                });
-                
-                // 价值观项目动画
-                const valueItems = entry.target.querySelectorAll('.value-item');
-                valueItems.forEach((item, index) => {
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
-                    }, index * 100);
-                });
-                
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // 初始化动画状态
-    const animatedElements = aboutSection.querySelectorAll('.stat-card, .team-member, .value-item');
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    });
-    
-    observer.observe(aboutSection);
-    
-    // 团队头像悬停效果
-    const memberAvatars = aboutSection.querySelectorAll('.member-avatar');
-    memberAvatars.forEach(avatar => {
-        avatar.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.1) rotate(5deg)';
-        });
-        
-        avatar.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1) rotate(0deg)';
-        });
-    });
-    
-    // 统计卡片数字动画
-    const statNumbers = aboutSection.querySelectorAll('.stat-card .stat-number');
-    const statsObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                const text = target.textContent;
-                let targetNumber = 0;
-                
-                if (text.includes('万')) {
-                    targetNumber = parseInt(text) * 10000;
-                } else if (text.includes('%')) {
-                    targetNumber = parseInt(text);
-                } else if (text.includes('/')) {
-                    // 忽略 "24/7" 格式
-                    return;
-                } else {
-                    targetNumber = parseInt(text);
-                }
-                
-                if (targetNumber > 0) {
-                    animateNumber(target, 0, targetNumber, 2000);
-                }
-                
-                statsObserver.unobserve(target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    statNumbers.forEach(num => {
-        if (!num.textContent.includes('/')) {
-            statsObserver.observe(num);
-        }
     });
 }
 
-// 导航到对应模块
-function navigateToModule(moduleType) {
-    const moduleInfo = {
-        scl90: {
-            title: 'SCL90心理健康测评',
-            description: '国际通用的心理健康评估工具',
-            url: 'assessment.html?type=scl90',
-            confirmation: 'SCL90测评包含90道题目，预计需要15-20分钟完成。请确保您有足够的时间和安静的环境。',
-            icon: '🧠',
-            duration: '15-20分钟',
-            questions: '90道题目'
-        },
-        mbti: {
-            title: 'MBTI16人格测试',
-            description: '了解您的MBTI人格类型，发现性格特征和行为偏好',
-            url: 'assessment.html?type=mbti',
-            confirmation: 'MBTI16人格测试包含60道题目，预计需要10-15分钟完成。请根据您的真实感受作答。',
-            icon: '🔮',
-            duration: '10-15分钟',
-            questions: '60道题目'
-        },
-        bipolar: {
-            title: '双向情感障碍测试',
-            description: '评估情绪波动和双向情感障碍倾向，了解情绪健康状态',
-            url: 'assessment.html?type=bipolar',
-            confirmation: '双向情感障碍测试包含45道题目，预计需要8-12分钟完成。',
-            icon: '🌊',
-            duration: '8-12分钟',
-            questions: '45道题目'
-        },
-        darktriad: {
-            title: '黑暗三角人格测试',
-            description: '探索马基雅维利主义、自恋和精神病态特质倾向',
-            url: 'assessment.html?type=darktriad',
-            confirmation: '黑暗三角人格测试包含50道题目，预计需要12-18分钟完成。',
-            icon: '🌑',
-            duration: '12-18分钟',
-            questions: '50道题目'
-        },
-        attachment: {
-            title: '成人依恋类型测试',
-            description: '了解您的依恋类型，探索人际关系和情感连接模式',
-            url: 'assessment.html?type=attachment',
-            confirmation: '成人依恋类型测试包含55道题目，预计需要10-15分钟完成。',
-            icon: '💝',
-            duration: '10-15分钟',
-            questions: '55道题目'
-        },
-        bem: {
-            title: '贝姆心理性别测试',
-            description: '评估您的心理性别特征，了解男性化和女性化特质倾向',
-            url: 'assessment.html?type=bem',
-            confirmation: '贝姆心理性别测试包含40道题目，预计需要8-12分钟完成。',
-            icon: '⚧️',
-            duration: '8-12分钟',
-            questions: '40道题目'
-        }
-    };
+// 设置导航激活状态
+function setupNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]');
     
-    const info = moduleInfo[moduleType];
-    if (info) {
+    // 滚动时更新激活状态
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (window.pageYOffset >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+// 设置开始测评按钮
+function setupStartButtons() {
+    const startBtn = document.getElementById('startTestBtn');
+    const ctaBtn = document.getElementById('ctaStartBtn');
+    
+    function startAssessment() {
         // 显示精美的确认对话框
-        showAssessmentModal(info, moduleType);
+        showAssessmentModal();
+    }
+    
+    if (startBtn) {
+        startBtn.addEventListener('click', startAssessment);
+    }
+    
+    if (ctaBtn) {
+        ctaBtn.addEventListener('click', startAssessment);
     }
 }
 
-// 显示精美的测评确认模态框
-function showAssessmentModal(info, moduleType) {
-    // 创建模态框背景
+// 显示测评确认模态框
+function showAssessmentModal() {
     const modalOverlay = document.createElement('div');
     modalOverlay.className = 'assessment-modal-overlay';
     modalOverlay.innerHTML = `
         <div class="assessment-modal">
             <div class="modal-header">
-                <div class="modal-icon">${info.icon}</div>
-                <h3 class="modal-title">${info.title}</h3>
+                <div class="modal-icon">🧠</div>
+                <h3 class="modal-title">SCL90心理健康测评</h3>
                 <button class="modal-close" aria-label="关闭">×</button>
             </div>
             
@@ -289,27 +102,28 @@ function showAssessmentModal(info, moduleType) {
                         <span class="info-icon">📋</span>
                         <div class="info-text">
                             <span class="info-label">题目数量</span>
-                            <span class="info-value">${info.questions}</span>
+                            <span class="info-value">90道题</span>
                         </div>
                     </div>
                     <div class="info-item">
                         <span class="info-icon">⏱️</span>
                         <div class="info-text">
                             <span class="info-label">预计用时</span>
-                            <span class="info-value">${info.duration}</span>
+                            <span class="info-value">15-20分钟</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="assessment-description">
-                    <p>${info.description}</p>
+                    <p>SCL90症状自评量表是国际公认的心理健康评估工具，将从10个维度全面评估您的心理健康状况。</p>
                     <div class="assessment-tips">
                         <h4>💡 测评小提示</h4>
                         <ul>
-                            <li>请根据您的真实感受作答</li>
-                            <li>选择安静舒适的环境</li>
-                            <li>确保有足够的时间完成</li>
-                            <li>没有对错之分，请放心作答</li>
+                            <li>请根据最近一周的真实感受作答</li>
+                            <li>选择安静舒适的环境进行测评</li>
+                            <li>确保有足够的时间完成全部题目</li>
+                            <li>没有对错之分，请如实回答</li>
+                            <li>测评结果仅供参考，不能替代专业诊断</li>
                         </ul>
                     </div>
                 </div>
@@ -333,10 +147,9 @@ function showAssessmentModal(info, moduleType) {
         </div>
     `;
     
-    // 添加到页面
     document.body.appendChild(modalOverlay);
     
-    // 添加CSS动画类
+    // 添加动画
     setTimeout(() => {
         modalOverlay.classList.add('show');
     }, 10);
@@ -350,21 +163,15 @@ function showAssessmentModal(info, moduleType) {
     };
     
     const confirmAssessment = () => {
-        // 保存当前选择的模块信息
+        // 保存测评信息
         localStorage.setItem('currentAssessment', JSON.stringify({
-            type: moduleType,
-            title: info.title,
+            type: 'scl90',
+            title: 'SCL90心理健康测评',
             startTime: new Date().toISOString()
         }));
         
-        // 添加确认动画
-        const confirmBtn = modalOverlay.querySelector('.modal-confirm');
-        confirmBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 正在进入...';
-        confirmBtn.disabled = true;
-        
-        setTimeout(() => {
-            window.location.href = info.url;
-        }, 500);
+        // 跳转到测评页面
+        window.location.href = 'assessment.html?type=scl90';
     };
     
     // 绑定事件
@@ -389,287 +196,309 @@ function showAssessmentModal(info, moduleType) {
     document.addEventListener('keydown', handleEscape);
 }
 
-// 数字动画函数（移到全局作用域）
-function animateNumber(element, target, duration = 2000) {
-    const start = 0;
-    const increment = target / (duration / 16);
-    let current = start;
+// 设置滚动动画
+function setupScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
     
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            current = target;
-            clearInterval(timer);
-        }
-        
-        // 格式化数字显示
-        if (target >= 10000) {
-            element.textContent = Math.floor(current / 1000) + '万+';
-        } else if (target >= 100) {
-            element.textContent = Math.floor(current) + '%';
-        } else {
-            element.textContent = Math.floor(current) + '+';
-        }
-    }, 16);
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // 观察特性卡片
+    const featureCards = document.querySelectorAll('.feature-card');
+    featureCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+    
+    // 观察FAQ项目
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(-30px)';
+        item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        observer.observe(item);
+    });
+    
+    // 观察维度卡片
+    const dimensionItems = document.querySelectorAll('.dimension-item');
+    dimensionItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'scale(0.8)';
+        item.style.transition = `opacity 0.4s ease ${index * 0.05}s, transform 0.4s ease ${index * 0.05}s`;
+        observer.observe(item);
+    });
 }
 
 // 统计数字动画
-function animateStats() {
-    const statNumbers = document.querySelectorAll('.stat-number');
+function setupCounterAnimation() {
+    const statCards = document.querySelectorAll('.stat-card');
     
-    // 当统计区域进入视口时开始动画
-    const statsObserver = new IntersectionObserver(function(entries) {
+    const observerOptions = {
+        threshold: 0.5
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const numbers = entry.target.querySelectorAll('.stat-number');
-                numbers.forEach(num => {
-                    const text = num.textContent;
-                    let target = 0;
-                    
-                    if (text.includes('万')) {
-                        target = parseInt(text) * 10000;
-                    } else if (text.includes('%')) {
-                        target = parseInt(text);
-                    } else {
-                        target = parseInt(text);
-                    }
-                    
-                    animateNumber(num, target);
-                });
+                const card = entry.target;
+                const number = card.querySelector('.stat-number');
+                const finalValue = number.textContent.trim();
                 
-                statsObserver.unobserve(entry.target);
+                // 只对纯数字进行动画
+                if (/^\d+$/.test(finalValue)) {
+                    animateNumber(number, 0, parseInt(finalValue), 1500);
+                }
+                
+                observer.unobserve(card);
             }
         });
-    }, { threshold: 0.5 });
+    }, observerOptions);
     
-    const heroStats = document.querySelector('.hero-stats');
-    if (heroStats) {
-        statsObserver.observe(heroStats);
-    }
+    statCards.forEach(card => {
+        observer.observe(card);
+    });
 }
 
-// 搜索功能
-function setupSearchFunctionality() {
-    // 创建搜索容器
-    const searchContainer = document.createElement('div');
-    searchContainer.className = 'search-container';
-    searchContainer.innerHTML = `
-        <div class="search-box">
-            <input type="text" class="search-input" placeholder="搜索心理测评..." />
-            <button class="search-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-            </button>
-        </div>
-        <div class="search-results"></div>
-    `;
+// 数字动画函数
+function animateNumber(element, start, end, duration) {
+    const startTime = performance.now();
     
-    // 添加到section header
-    const sectionHeader = document.querySelector('.test-modules .section-header');
-    if (sectionHeader) {
-        sectionHeader.appendChild(searchContainer);
-    }
-    
-    const searchInput = searchContainer.querySelector('.search-input');
-    const searchResults = searchContainer.querySelector('.search-results');
-    
-    // 搜索逻辑（支持所有模块）
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
+    const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
         
-        if (query.length === 0) {
-            searchResults.style.display = 'none';
-            return;
-        }
+        // 使用缓动函数
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(start + (end - start) * easeOutQuart);
         
-        const moduleCards = document.querySelectorAll('.module-card');
-        const matches = Array.from(moduleCards).filter(card => {
-            const title = card.querySelector('.module-title').textContent.toLowerCase();
-            const description = card.querySelector('.module-description').textContent.toLowerCase();
-            return title.includes(query) || description.includes(query);
-        });
+        element.textContent = current;
         
-        if (matches.length > 0) {
-            searchResults.innerHTML = matches.map(card => {
-                const title = card.querySelector('.module-title').textContent;
-                const description = card.querySelector('.module-description').textContent;
-                return `
-                    <div class="search-result-item" data-module-id="${card.dataset.module}">
-                        <div class="search-result-title">${title}</div>
-                        <div class="search-result-description">${description}</div>
-                    </div>
-                `;
-            }).join('');
-            searchResults.style.display = 'block';
+        if (progress < 1) {
+            requestAnimationFrame(animate);
         } else {
-            searchResults.innerHTML = '<div class="search-no-results">未找到相关测评</div>';
-            searchResults.style.display = 'block';
+            element.textContent = end;
         }
-    });
+    };
     
-    // 搜索结果点击（支持所有模块）
-    searchResults.addEventListener('click', function(e) {
-        const resultItem = e.target.closest('.search-result-item');
-        if (resultItem) {
-            const moduleId = resultItem.dataset.moduleId;
-            const targetCard = document.querySelector(`[data-module="${moduleId}"]`);
-            if (targetCard) {
-                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                targetCard.style.animation = 'highlight 2s ease';
-                searchInput.value = '';
-                searchResults.style.display = 'none';
-            }
-        }
-    });
-    
-    // 点击外部关闭搜索结果
-    document.addEventListener('click', function(e) {
-        if (!searchContainer.contains(e.target)) {
-            searchResults.style.display = 'none';
-        }
-    });
+    requestAnimationFrame(animate);
 }
 
-// 键盘导航支持（支持所有模块）
-function setupKeyboardNavigation() {
-    const moduleCards = document.querySelectorAll('.module-card');
-    let currentFocus = -1;
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Tab') {
-            // Tab键导航
-            if (e.shiftKey) {
-                // Shift+Tab 向前导航
-                currentFocus = currentFocus <= 0 ? moduleCards.length - 1 : currentFocus - 1;
-            } else {
-                // Tab 向后导航
-                currentFocus = currentFocus >= moduleCards.length - 1 ? 0 : currentFocus + 1;
-            }
-            
-            if (currentFocus >= 0 && currentFocus < moduleCards.length) {
-                moduleCards[currentFocus].focus();
-                e.preventDefault();
-            }
-        } else if (e.key === 'Enter' && currentFocus >= 0) {
-            // Enter键开始测评
-            const focusedCard = moduleCards[currentFocus];
-            const button = focusedCard.querySelector('.btn');
-            if (button) {
-                button.click();
-            }
-        }
-    });
-    
-    // 使卡片可聚焦
-    moduleCards.forEach(card => {
-        card.setAttribute('tabindex', '0');
-        card.setAttribute('role', 'button');
-        card.setAttribute('aria-label', `${card.querySelector('.module-title').textContent}测评模块`);
-    });
-}
-
-// 添加CSS动画
+// 添加模态框CSS样式
 const style = document.createElement('style');
 style.textContent = `
-    .search-container {
-        position: relative;
-        max-width: 500px;
-        margin: 2rem auto 0;
-    }
-    
-    .search-box {
-        position: relative;
-        display: flex;
-        align-items: center;
-        background: var(--bg-secondary);
-        border-radius: 25px;
-        box-shadow: var(--shadow-soft);
-        overflow: hidden;
-        border: 1px solid rgba(25, 118, 210, 0.1);
-    }
-    
-    .search-input {
-        flex: 1;
-        padding: 1rem 1.5rem;
-        border: none;
-        outline: none;
-        font-size: 1rem;
-        background: transparent;
-    }
-    
-    .search-btn {
-        padding: 1rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--primary-blue);
-        transition: color 0.2s ease;
-    }
-    
-    .search-btn:hover {
-        color: var(--primary-green);
-    }
-    
-    .search-results {
-        position: absolute;
-        top: 100%;
+    .assessment-modal-overlay {
+        position: fixed;
+        top: 0;
         left: 0;
         right: 0;
-        background: var(--bg-secondary);
-        border: 1px solid rgba(25, 118, 210, 0.15);
-        border-radius: 12px;
-        box-shadow: var(--shadow-medium);
-        max-height: 300px;
-        overflow-y: auto;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         z-index: 1000;
-        display: none;
-        margin-top: 0.5rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
     
-    .search-result-item {
-        padding: 1rem 1.5rem;
+    .assessment-modal-overlay.show {
+        opacity: 1;
+    }
+    
+    .assessment-modal {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(25, 118, 210, 0.2);
+    }
+    
+    .assessment-modal-overlay.show .assessment-modal {
+        transform: scale(1) translateY(0);
+    }
+    
+    .modal-header {
+        background: linear-gradient(135deg, #1976D2 0%, #2E7D32 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 20px 20px 0 0;
+        text-align: center;
+        position: relative;
+    }
+    
+    .modal-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        animation: pulse 2s infinite;
+    }
+    
+    .modal-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
         cursor: pointer;
-        border-bottom: 1px solid #E2E8F0;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         transition: background-color 0.2s ease;
     }
     
-    .search-result-item:hover {
-        background: #F7FAFC;
+    .modal-close:hover {
+        background: rgba(255, 255, 255, 0.3);
     }
     
-    .search-result-item:last-child {
-        border-bottom: none;
-    }
-    
-    .search-result-title {
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 0.25rem;
-    }
-    
-    .search-result-description {
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-        line-height: 1.4;
-    }
-    
-    .search-no-results {
+    .modal-content {
         padding: 2rem;
-        text-align: center;
-        color: var(--text-tertiary);
     }
     
-    @keyframes highlight {
-        0% { background-color: transparent; }
-        50% { background-color: var(--primary-light); }
-        100% { background-color: transparent; }
+    .assessment-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
     }
     
-    .module-card:focus {
-        outline: 2px solid var(--primary-blue);
-        outline-offset: 2px;
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #E3F2FD;
+        border-radius: 12px;
+        transition: transform 0.2s ease;
+    }
+    
+    .info-item:hover {
+        transform: translateY(-2px);
+    }
+    
+    .info-icon {
+        font-size: 1.5rem;
+    }
+    
+    .info-text {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .info-label {
+        font-size: 0.85rem;
+        color: #546E7A;
+    }
+    
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1976D2;
+    }
+    
+    .assessment-description p {
+        color: #546E7A;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+    
+    .assessment-tips {
+        background: #E8F5E8;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border-left: 4px solid #2E7D32;
+    }
+    
+    .assessment-tips h4 {
+        color: #2E7D32;
+        margin: 0 0 1rem 0;
+        font-size: 1.1rem;
+    }
+    
+    .assessment-tips ul {
+        margin: 0;
+        padding-left: 1.5rem;
+        color: #546E7A;
+    }
+    
+    .assessment-tips li {
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    
+    .modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+    }
+    
+    .modal-actions .btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+    }
+    
+    @media (max-width: 640px) {
+        .assessment-modal {
+            width: 95%;
+            margin: 1rem;
+        }
+        
+        .modal-content {
+            padding: 1.5rem;
+        }
+        
+        .assessment-info {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .modal-actions {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .modal-actions .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
     }
 `;
 document.head.appendChild(style);

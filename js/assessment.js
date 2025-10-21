@@ -461,8 +461,13 @@ class AssessmentManager {
     
     // 查看答案
     reviewAnswers() {
-        // 实现答案查看功能
-        alert('答案查看功能开发中...');
+        // 显示答案查看界面
+        this.currentQuestion = 0;
+        this.showQuestionScreen();
+        this.updateQuestion();
+        
+        // 显示提示信息
+        this.showNotification('您可以查看所有答案，点击"生成分析报告"继续', 'info');
     }
     
     // 保存进度
