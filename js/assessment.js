@@ -36,11 +36,20 @@ class AssessmentManager {
     // 加载测评类型
     loadAssessmentType() {
         const urlParams = new URLSearchParams(window.location.search);
-        this.currentType = urlParams.get('type') || 'scl90';
+        const typeParam = urlParams.get('type') || 'scl90';
+        
+        // 验证测评类型是否有效
+        if (!ASSESSMENT_DATA[typeParam]) {
+            console.warn(`无效的测评类型: ${typeParam}, 使用默认类型scl90`);
+            this.currentType = 'scl90';
+        } else {
+            this.currentType = typeParam;
+        }
+        
         this.assessmentData = getAssessmentConfig(this.currentType);
         
         // 设置页面标题
-        document.title = `${this.assessmentData.title} - 心理测评中心`;
+        document.title = `${this.assessmentData.title} - 专业心理健康评估工具`;
         
         // 更新页面头部信息
         const titleElement = document.getElementById('assessmentTitle');

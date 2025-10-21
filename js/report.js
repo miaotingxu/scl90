@@ -31,21 +31,41 @@ class ReportGenerator {
     
     // 加载报告数据
     loadReportData() {
-        const savedReport = localStorage.getItem('currentReport');
-        const savedCompletion = localStorage.getItem(`assessment_${this.getAssessmentType()}_completed`);
-        
-        if (savedReport) {
-            this.reportData = JSON.parse(savedReport);
-        } else if (savedCompletion) {
-            this.reportData = JSON.parse(savedCompletion);
-        } else {
-            // 如果没有找到数据，返回首页
+        try {
+            const savedReport = localStorage.getItem('currentReport');
+            const savedCompletion = localStorage.getItem(`assessment_${this.getAssessmentType()}_completed`);
+            
+            if (savedReport) {
+                this.reportData = JSON.parse(savedReport);
+            } else if (savedCompletion) {
+                this.reportData = JSON.parse(savedCompletion);
+            } else {
+                // 如果没有找到数据，返回首页
+                console.warn('未找到测评数据，返回首页');
+                alert('未找到测评数据，请先完成SCL90测评');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 验证数据完整性
+            if (!this.reportData || !this.reportData.answers || !Array.isArray(this.reportData.answers)) {
+                throw new Error('测评数据格式错误');
+            }
+            
+            if (this.reportData.answers.length !== 90) {
+                throw new Error('测评数据不完整');
+            }
+            
+            this.assessmentType = this.reportData.type || 'scl90';
+            this.updateReportHeader();
+        } catch (error) {
+            console.error('加载测评数据失败:', error);
+            alert('加载测评数据失败，可能数据已损坏。请重新进行测评。');
+            // 清除损坏的数据
+            localStorage.removeItem('currentReport');
+            localStorage.removeItem(`assessment_${this.getAssessmentType()}_completed`);
             window.location.href = 'index.html';
-            return;
         }
-        
-        this.assessmentType = this.reportData.type;
-        this.updateReportHeader();
     }
     
     // 获取测评类型
