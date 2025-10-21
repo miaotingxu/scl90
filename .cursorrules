@@ -1,0 +1,327 @@
+# SCL90 心理健康自测项目开发规则
+
+## 项目概述
+这是一个专业的 SCL-90 心理健康评估工具，纯前端实现，无框架依赖。
+使用 HTML5 + CSS3 + Vanilla JavaScript 构建。
+
+## 核心原则
+- **保持简洁**：不引入任何外部框架或依赖库
+- **用户隐私**：所有数据仅保存在本地 localStorage，不上传服务器
+- **专业性**：严格遵循 SCL-90 标准评估体系
+- **响应式**：完美适配 PC、平板、移动端所有设备
+
+---
+
+## 代码风格规范
+
+### JavaScript 规范
+- **缩进**：使用 4 个空格缩进（不使用 tab）
+- **ES6+**：使用现代 JavaScript 语法
+  - 优先使用 `const`，必要时使用 `let`
+  - 完全避免使用 `var`
+  - 使用箭头函数、解构赋值、模板字符串等
+- **命名规范**：
+  - 类名：`PascalCase` (例如: `AssessmentManager`)
+  - 函数/方法：`camelCase` (例如: `loadAssessmentType()`)
+  - 常量：`UPPER_SNAKE_CASE` (例如: `MAX_QUESTIONS`)
+  - 变量：`camelCase` (例如: `currentQuestion`)
+- **注释**：
+  - 所有注释使用中文
+  - 类和重要方法必须添加注释说明功能
+  - 复杂逻辑必须添加行内注释
+- **错误处理**：
+  - 使用 `try-catch` 包裹可能出错的代码
+  - 添加友好的错误提示信息
+
+### HTML 规范
+- **缩进**：使用 4 个空格缩进
+- **语义化**：使用语义化标签 (`<header>`, `<main>`, `<section>`, `<article>` 等)
+- **无障碍**：添加适当的 ARIA 标签和 alt 属性
+- **表单元素**：所有 `<input>` 必须有对应的 `<label>`
+- **类名**：使用有意义的类名，保持一致性
+
+### CSS 规范
+- **缩进**：使用 4 个空格缩进
+- **命名**：使用 kebab-case (例如: `.hero-banner`, `.stat-card`)
+- **组织**：按功能模块组织样式
+- **避免**：
+  - 避免使用 `!important`（除非绝对必要）
+  - 避免过深的选择器嵌套（最多 3 层）
+- **响应式**：移动端优先的设计策略
+
+---
+
+## 文件组织结构
+
+### 目录结构（请严格遵守）
+```
+SCL90/
+├── index.html           # 首页（介绍和开始页面）
+├── assessment.html      # 测评页面（90道题目）
+├── report.html          # 报告页面（AI分析报告）
+├── css/                 # 所有样式文件
+│   ├── main.css        # 主样式（全局样式）
+│   ├── homepage.css    # 首页专用样式
+│   ├── assessment.css  # 测评页专用样式
+│   ├── report.css      # 报告页专用样式
+│   └── responsive.css  # 响应式样式
+└── js/                  # 所有 JavaScript 文件
+    ├── homepage.js     # 首页交互逻辑
+    ├── assessment.js   # 测评功能逻辑
+    ├── report.js       # 报告生成和显示
+    └── data.js         # SCL90 题目和配置数据
+```
+
+### 文件职责划分
+- **index.html + homepage.js + homepage.css**：首页，SCL90 介绍、特色功能展示
+- **assessment.html + assessment.js + assessment.css**：测评页，90 道题目的展示和答题
+- **report.html + report.js + report.css**：报告页，测评结果分析和可视化
+- **data.js**：存储 SCL90 的题目数据、维度配置、评分标准
+- **main.css**：全局样式（颜色变量、基础样式、通用组件）
+- **responsive.css**：所有页面的响应式适配
+
+---
+
+## SCL90 专业规范
+
+### 数据结构（请勿修改）
+- **题目数量**：固定 90 道题目
+- **评分方式**：1-5 分制（从没有、很轻、中等、偏重、严重）
+- **10 大维度**：
+  1. 躯体化 (Somatization)
+  2. 强迫症状 (Obsessive-Compulsive)
+  3. 人际关系敏感 (Interpersonal Sensitivity)
+  4. 抑郁 (Depression)
+  5. 焦虑 (Anxiety)
+  6. 敌对 (Hostility)
+  7. 恐怖 (Phobic Anxiety)
+  8. 偏执 (Paranoid Ideation)
+  9. 精神病性 (Psychoticism)
+  10. 其他 (Additional Items)
+
+### 评分标准
+- **总分范围**：90-450 分
+- **因子分**：各维度平均分（1-5 分）
+- **评估标准**：
+  - 正常：总分 < 160 或任何因子分 < 2
+  - 轻度：总分 160-180 或某因子分 2-3
+  - 中度：总分 181-200 或某因子分 3-4
+  - 重度：总分 > 200 或某因子分 > 4
+
+---
+
+## 功能开发规范
+
+### LocalStorage 数据管理
+- **键名规范**：
+  - `scl90_answers`：测评答案数据
+  - `scl90_report`：测评报告数据
+  - `scl90_progress`：测评进度数据
+- **数据格式**：统一使用 JSON 格式
+- **数据保护**：
+  - 保存前验证数据完整性
+  - 读取时进行错误处理
+  - 提供数据清除功能
+
+### 页面跳转逻辑
+- **index.html → assessment.html**：点击"开始测评"按钮
+- **assessment.html → report.html**：完成 90 道题目后
+- **report.html → index.html**：重新测评或返回首页
+- **保持状态**：使用 localStorage 保存用户进度
+
+### 答题进度保存
+- 自动保存答题进度（每答一题）
+- 刷新页面后可恢复进度
+- 提供"继续测评"和"重新开始"选项
+
+---
+
+## 不要做的事情（重要！）
+
+### 绝对禁止
+1. ❌ **不要修改 `data.js` 中的题目内容**
+   - SCL90 是国际标准量表，题目经过严格验证
+2. ❌ **不要引入外部依赖**
+   - 不要添加 jQuery、React、Vue 等框架
+   - 不要使用 npm、webpack 等构建工具
+   - 保持纯 HTML/CSS/JS 实现
+3. ❌ **不要破坏响应式布局**
+   - 修改样式时必须测试移动端显示效果
+4. ❌ **不要上传用户数据**
+   - 所有数据必须保存在本地
+   - 不要添加任何网络请求功能（除非获取 AI 分析）
+5. ❌ **不要修改 SCL90 评分算法**
+   - 评分标准是专业规范，不可随意更改
+
+### 谨慎操作
+- ⚠️ 修改数据结构时要考虑向后兼容性
+- ⚠️ 添加新功能时要保持原有功能正常运行
+- ⚠️ 优化性能时不要影响用户体验
+
+---
+
+## 用户体验要求
+
+### 友好提示
+- 所有操作都要有明确的视觉反馈
+- 错误信息要清晰易懂，提供解决方案
+- 完成测评后给予鼓励性提示
+
+### 性能优化
+- 页面加载时间 < 2 秒
+- 答题交互响应 < 100ms
+- 避免不必要的 DOM 操作
+- 图片/图表懒加载
+
+### 无障碍访问
+- 使用语义化 HTML
+- 添加 ARIA 标签
+- 支持键盘导航
+- 保证足够的颜色对比度
+
+---
+
+## Git 提交规范
+
+### 提交信息格式
+```
+<类型>: <简短描述>
+
+<详细描述（可选）>
+
+<关联 Issue（可选）>
+```
+
+### 类型说明
+- `feat`: 新功能
+- `fix`: Bug 修复
+- `refactor`: 代码重构（不改变功能）
+- `style`: 样式调整（UI/CSS 修改）
+- `docs`: 文档更新
+- `perf`: 性能优化
+- `test`: 测试相关
+- `chore`: 构建/配置相关
+
+### 示例
+```
+feat: 添加测评进度保存功能
+
+- 实现答题进度自动保存到 localStorage
+- 页面刷新后可恢复到上次答题位置
+- 添加"继续测评"和"重新开始"选项
+
+Closes #12
+```
+
+---
+
+## 测试要求
+
+### 浏览器测试
+- ✅ Chrome 90+
+- ✅ Firefox 88+
+- ✅ Safari 14+
+- ✅ Edge 90+
+- ✅ 移动端浏览器（iOS Safari、Android Chrome）
+
+### 功能测试
+- ✅ 答题流程完整无误
+- ✅ 进度保存和恢复正常
+- ✅ 报告生成准确
+- ✅ 数据清除功能正常
+
+### 响应式测试
+- ✅ 手机端（320px - 767px）
+- ✅ 平板端（768px - 1023px）
+- ✅ 桌面端（1024px+）
+
+---
+
+## 安全和隐私
+
+### 数据安全
+- 不在代码中硬编码敏感信息
+- localStorage 数据不包含个人身份信息
+- 提供数据清除功能
+
+### 隐私保护
+- 不收集用户个人信息
+- 不使用 Cookie 或其他跟踪技术
+- 在首页明确说明隐私政策
+
+---
+
+## 代码示例参考
+
+### JavaScript 类结构
+```javascript
+class AssessmentManager {
+    constructor() {
+        // 初始化属性
+        this.currentQuestion = 0;
+        this.answers = [];
+        
+        this.init();
+    }
+    
+    // 初始化方法
+    init() {
+        // 初始化逻辑
+    }
+    
+    // 其他方法...
+}
+```
+
+### 错误处理
+```javascript
+try {
+    const data = JSON.parse(localStorage.getItem('scl90_answers'));
+    if (!data) {
+        throw new Error('未找到测评数据');
+    }
+} catch (error) {
+    console.error('加载数据失败:', error);
+    alert('加载失败，请重新开始测评');
+}
+```
+
+### LocalStorage 操作
+```javascript
+// 保存数据
+const saveData = (key, data) => {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+        return true;
+    } catch (error) {
+        console.error('保存失败:', error);
+        return false;
+    }
+};
+
+// 读取数据
+const loadData = (key) => {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+    } catch (error) {
+        console.error('读取失败:', error);
+        return null;
+    }
+};
+```
+
+---
+
+## 特别提醒
+
+1. **保持专业性**：这是一个心理健康评估工具，代码质量和准确性至关重要
+2. **用户至上**：所有功能开发都要以用户体验为中心
+3. **隐私第一**：用户数据安全是最高优先级
+4. **代码整洁**：宁可多写几行清晰的代码，也不要写晦涩的"聪明代码"
+5. **充分测试**：修改后务必在多个浏览器和设备上测试
+
+---
+
+**遵循这些规则，我们将共同打造一个专业、可靠、用户友好的心理健康评估工具！** 🌟
+
