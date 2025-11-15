@@ -158,14 +158,9 @@ class AssessmentManager {
         
         // 完成页面按钮
         const generateReportBtn = document.getElementById('generateReport');
-        const reviewAnswersBtn = document.getElementById('reviewAnswers');
-        
+
         if (generateReportBtn) {
             generateReportBtn.addEventListener('click', () => this.generateReport());
-        }
-        
-        if (reviewAnswersBtn) {
-            reviewAnswersBtn.addEventListener('click', () => this.reviewAnswers());
         }
         
         // 悬浮按钮
@@ -185,7 +180,8 @@ class AssessmentManager {
         const fabHelp = document.getElementById('fabHelp');
         const fabSave = document.getElementById('fabSave');
         const fabExit = document.getElementById('fabExit');
-        
+        const fabQuestions = document.getElementById('fabQuestions');
+
         if (fabMain) {
             fabMain.addEventListener('click', () => {
                 if (fabMenu.style.display === 'none') {
@@ -201,17 +197,21 @@ class AssessmentManager {
                 }
             });
         }
-        
+
         if (fabHelp) {
             fabHelp.addEventListener('click', () => this.showHelp());
         }
-        
+
         if (fabSave) {
             fabSave.addEventListener('click', () => this.saveProgress());
         }
-        
+
         if (fabExit) {
             fabExit.addEventListener('click', () => this.exitAssessment());
+        }
+
+        if (fabQuestions) {
+            fabQuestions.addEventListener('click', () => this.showQuestionsList());
         }
     }
     
@@ -468,16 +468,6 @@ class AssessmentManager {
         window.location.href = 'report.html';
     }
     
-    // 查看答案
-    reviewAnswers() {
-        // 显示答案查看界面
-        this.currentQuestion = 0;
-        this.showQuestionScreen();
-        this.updateQuestion();
-        
-        // 显示提示信息
-        this.showNotification('您可以查看所有答案，点击"生成分析报告"继续', 'info');
-    }
     
     // 保存进度
     saveProgress() {
@@ -614,6 +604,97 @@ class AssessmentManager {
     // 更新UI
     updateUI() {
         // 这里可以添加更多UI更新逻辑
+    }
+
+    // 显示题目清单
+    showQuestionsList() {
+        this.renderQuestionsList();
+        const modal = document.getElementById('questionsModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            // 关闭悬浮按钮菜单
+            const fabMenu = document.getElementById('fabMenu');
+            const fabMain = document.getElementById('fabMain');
+            if (fabMenu && fabMain) {
+                fabMenu.classList.remove('show');
+                setTimeout(() => {
+                    fabMenu.style.display = 'none';
+                    fabMain.classList.remove('active');
+                }, 300);
+            }
+        }
+    }
+
+    // 隐藏题目清单
+    hideQuestionsList() {
+        const modal = document.getElementById('questionsModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // 渲染题目清单
+    renderQuestionsList() {
+        const modalBody = document.getElementById('questionsModalBody');
+        if (!modalBody) return;
+
+        // 清空内容
+        modalBody.innerHTML = '';
+
+        // 创建题目列表
+        const questionsList = document.createElement('div');
+        questionsList.className = 'questions-list';
+
+        // 遍历所有题目
+        for (let i = 0; i < this.assessmentData.questionCount; i++) {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+
+            // 标记题目状态
+            if (i === this.currentQuestion) {
+                questionItem.classList.add('current');
+            } else if (this.answers[i] !== undefined) {
+                questionItem.classList.add('answered');
+            } else {
+                questionItem.classList.add('unanswered');
+            }
+
+            // 设置题目编号
+            questionItem.textContent = i + 1;
+
+            // 添加点击事件
+            const questionIndex = i;
+            questionItem.addEventListener('click', () => {
+                this.goToQuestion(questionIndex);
+                this.hideQuestionsList();
+            });
+
+            // 添加到列表
+            questionsList.appendChild(questionItem);
+        }
+
+        // 添加到模态框
+        modalBody.appendChild(questionsList);
+
+        // 绑定关闭事件
+        const closeBtn = document.getElementById('questionsModalClose');
+        const overlay = document.querySelector('.questions-modal-overlay');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.hideQuestionsList());
+        }
+        if (overlay) {
+            overlay.addEventListener('click', () => this.hideQuestionsList());
+        }
+    }
+
+    // 跳转到指定题目
+    goToQuestion(questionIndex) {
+        if (questionIndex >= 0 && questionIndex < this.assessmentData.questionCount) {
+            this.currentQuestion = questionIndex;
+            this.updateQuestion();
+            // 更新进度条
+            this.updateProgress();
+        }
     }
 }
 

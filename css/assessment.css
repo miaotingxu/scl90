@@ -72,7 +72,7 @@
 .welcome-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #2D3748;
+    color: var(--text-primary); /* 统一使用主题深灰色 */
     margin-bottom: 1rem;
 }
 
@@ -306,7 +306,7 @@
 .completion-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #2D3748;
+    color: var(--text-primary); /* 统一为全局主文字色 - 深灰 */
     margin-bottom: 1rem;
 }
 
@@ -562,44 +562,190 @@
         background: #1A202C;
         color: #E2E8F0;
     }
-    
+
     .progress-bar {
         background: #2D3748;
     }
-    
+
     .question-header {
         border-bottom-color: #4A5568;
     }
-    
+
     .answer-option {
         background: #2D3748;
         border-color: #4A5568;
         color: #E2E8F0;
     }
-    
+
     .answer-option:hover {
         background: #4A5568;
         border-color: #4A90E2;
     }
-    
+
     .question-navigation {
         border-top-color: #4A5568;
     }
-    
+
     .assessment-details {
         background: #2D3748;
     }
-    
+
     .welcome-notice {
         background: #2D3748;
         border-left-color: #4A90E2;
     }
-    
+
     .completion-summary {
         background: #2D3748;
     }
-    
+
     .summary-item {
         border-bottom-color: #4A5568;
+    }
+}
+
+/* 题目清单弹窗样式 */
+.questions-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.questions-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.questions-modal-content {
+    position: relative;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dark mode for modal */
+@media (prefers-color-scheme: dark) {
+    .questions-modal-content {
+        background: #1A202C;
+        color: #E2E8F0;
+    }
+}
+
+.questions-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.questions-modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.questions-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.questions-modal-close:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.questions-modal-body {
+    padding: 1.5rem;
+}
+
+/* 题目列表样式 */
+.questions-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 0.5rem;
+}
+
+.question-item {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+/* 已测题目样式 */
+.question-item.answered {
+    background: var(--primary-light);
+    color: var(--text-primary);
+    border-color: var(--primary-color);
+}
+
+/* 当前题目样式 */
+.question-item.current {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-dark);
+    box-shadow: var(--shadow-md);
+}
+
+/* 未测题目样式 */
+.question-item.unanswered {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+.question-item.unanswered:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+/* 题目项在模态框中的交互效果 */
+.question-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .questions-modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 1rem;
+    }
+
+    .questions-list {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
     }
 }

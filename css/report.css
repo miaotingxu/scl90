@@ -2,16 +2,16 @@
 
 /* 专业配色变量 */
 :root {
-    --report-primary: #1976D2;
-    --report-secondary: #2E7D32;
-    --report-accent: #FF9800;
-    --report-success: #4CAF50;
-    --report-warning: #F59E0B;
-    --report-error: #E57373;
-    --report-bg: #F8FBF9;
-    --report-card: #FFFFFF;
-    --report-text: #263238;
-    --report-text-secondary: #546E7A;
+    --report-primary: #73C2FB; /* 统一为全局主色 - 浅天空蓝 */
+    --report-secondary: #81D4FA; /* 统一为全局辅助色 - 浅青绿 */
+    --report-accent: #95E6A5; /* 统一为全局强调色 - 极浅绿 */
+    --report-success: var(--success-color); /* 使用全局成功色 */
+    --report-warning: var(--warning-color); /* 使用全局警告色 */
+    --report-error: var(--error-color); /* 使用全局错误色 */
+    --report-bg: var(--bg-primary); /* 使用全局背景色 */
+    --report-card: var(--bg-secondary); /* 使用全局卡片色 */
+    --report-text: var(--text-primary); /* 统一为全局主文字色 - 深灰 */
+    --report-text-secondary: var(--text-secondary); /* 统一为全局次级文字色 - 中灰 */
     --report-border: rgba(25, 118, 210, 0.1);
     --report-shadow: 0 4px 16px rgba(25, 118, 210, 0.08);
 }

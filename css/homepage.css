@@ -109,6 +109,7 @@
     letter-spacing: -0.02em;
     text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
     animation: fadeInUp 0.6s ease-out 0.2s both;
+    color: var(--text-primary); /* 使用主题深灰色，避免纯黑 */
 }
 
 .hero-subtitle {
